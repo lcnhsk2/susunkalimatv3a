@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>HSK 连词成句 · by lcnpalembang-08994477998</title>
+<style>
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:"Noto Sans SC","Microsoft YaHei","PingFang SC","Hiragino Sans GB","Source Han Sans SC",system-ui,-apple-system,sans-serif;
+    min-height:100vh;min-height:100dvh;
+    color:#2b2d42;
+    background:linear-gradient(160deg,#e6f3ff 0%,#f2e9ff 32%,#ffeef6 66%,#fffbe8 100%);
+    background-size:200% 200%;
+    animation:bgShift 22s ease infinite;
+    display:flex;align-items:center;justify-content:center;
+    padding:12px;
+    overflow-x:hidden;
+    touch-action:manipulation;
+  }
+  @keyframes bgShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+
+  .deco{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+  .deco span{position:absolute;font-size:34px;opacity:.35;animation:floaty 14s ease-in-out infinite}
+  .deco span:nth-child(1){left:4%;top:10%;animation-delay:0s}
+  .deco span:nth-child(2){right:6%;top:16%;animation-delay:1.6s}
+  .deco span:nth-child(3){left:10%;bottom:12%;animation-delay:3.2s}
+  .deco span:nth-child(4){right:9%;bottom:18%;animation-delay:4.8s}
+  .deco span:nth-child(5){left:46%;top:4%;animation-delay:2.4s}
+  .deco span:nth-child(6){right:34%;bottom:5%;animation-delay:6s}
+  @keyframes floaty{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-18px) rotate(8deg)}}
+
+  #app{position:relative;z-index:1;width:100%;max-width:1000px}
+  .screen{display:none}
+  .screen.active{display:block;animation:fadeUp .4s ease both}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+  /* ===== GLOBAL BRAND HEADER (selalu tampil di setiap halaman) ===== */
+  .global-brand{
+    position:sticky;top:0;z-index:60;
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    padding:10px 16px;margin-bottom:12px;
+    background:rgba(255,255,255,.93);
+    -webkit-backdrop-filter:blur(10px);
+    backdrop-filter:blur(10px);
+    border:2px solid #fff;border-radius:18px;
+    box-shadow:0 6px 20px rgba(91,141,239,.14);
+  }
+  .gb-left{display:flex;align-items:center;gap:10px;min-width:0}
+  .gb-emoji{font-size:26px;line-height:1;flex:0 0 auto}
+  .gb-text{min-width:0}
+  .gb-title{
+    font-size:clamp(16px,2.6vw,21px);font-weight:900;letter-spacing:1.5px;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    background:linear-gradient(90deg,#5b8def,#9b7bff,#ff8fb1,#34c759);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .gb-id{
+    font-size:clamp(10px,1.7vw,12.5px);font-weight:800;color:#7a7f9a;
+    letter-spacing:.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+
+  .panel{
+    background:rgba(255,255,255,.94);
+    border:3px solid #fff;
+    border-radius:26px;
+    box-shadow:0 16px 40px rgba(120,110,220,.16),0 4px 12px rgba(0,0,0,.05);
+    padding:22px;
+  }
+
+  /* ============ HOME ============ */
+  .subtitle{
+    margin:0 0 4px;font-size:clamp(17px,2.8vw,22px);color:#5b8def;font-weight:800;letter-spacing:3px;text-align:center;
+  }
+  .desc{text-align:center;color:#6b7280;font-size:clamp(13px,2vw,15px);margin:10px 0 6px;line-height:1.6}
+
+  .section-label{
+    font-size:14px;font-weight:800;color:#5b8def;letter-spacing:1px;
+    margin:20px 0 10px;display:flex;align-items:center;gap:8px;
+  }
+  .section-label::before{content:"";width:6px;height:18px;border-radius:6px;background:linear-gradient(#5b8def,#9b7bff)}
+
+  .level-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .level-card{
+    font-family:inherit;cursor:pointer;border:3px solid #e6e9f5;background:#fff;
+    border-radius:20px;padding:14px 6px;display:flex;flex-direction:column;align-items:center;gap:3px;
+    transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease,background .18s ease;
+    box-shadow:0 4px 0 #eef1fa;
+  }
+  .level-card .lv-icon{font-size:26px;line-height:1}
+  .level-card .lv-name{font-size:15px;font-weight:900;color:#2b2d42}
+  .level-card .lv-sub{font-size:11.5px;font-weight:700;color:#8b90a8}
+  .level-card.selected{
+    border-color:#5b8def;background:linear-gradient(160deg,#eef5ff,#ffffff);
+    box-shadow:0 4px 0 #cfe0ff,0 0 0 4px rgba(91,141,239,.12);
+    transform:translateY(-2px);
+  }
+  .level-card:active{transform:translateY(2px);box-shadow:0 1px 0 #eef1fa}
+
+  .count-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .count-card{
+    font-family:inherit;font-size:17px;font-weight:900;cursor:pointer;
+    border:3px solid #e6e9f5;background:#fff;color:#2b2d42;
+    border-radius:16px;padding:13px 4px;
+    transition:all .18s ease;box-shadow:0 4px 0 #eef1fa;
+  }
+  .count-card.selected{border-color:#34c759;background:linear-gradient(160deg,#eafff2,#fff);box-shadow:0 4px 0 #c8f2d8;transform:translateY(-2px)}
+  .count-card:active{transform:translateY(2px);box-shadow:0 1px 0 #eef1fa}
+
+  .btn-start{
+    width:100%;margin-top:22px;padding:18px;border:none;border-radius:20px;cursor:pointer;
+    font-family:inherit;font-size:19px;font-weight:900;color:#fff;letter-spacing:1px;
+    background:linear-gradient(135deg,#5b8def,#9b7bff);
+    box-shadow:0 6px 0 #4a76d1;transition:transform .16s ease,box-shadow .16s ease;
+  }
+  .btn-start:active{transform:translateY(5px);box-shadow:0 1px 0 #4a76d1}
+  .hint{text-align:center;font-size:12.5px;color:#8b90a8;margin:14px 0 0;line-height:1.6}
+  .hint b{color:#5b8def}
+
+  /* ============ GAME ============ */
+  .hud{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+  .hud-left,.hud-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .badge{
+    background:#eef2ff;color:#4a76d1;font-weight:900;font-size:13.5px;
+    padding:7px 14px;border-radius:999px;white-space:nowrap;
+  }
+  .badge.score{background:#fff6e0;color:#e08a00}
+  .icon-btn{
+    border:none;background:#eef2ff;border-radius:999px;width:40px;height:40px;
+    font-size:18px;cursor:pointer;transition:transform .15s ease,background .15s ease;
+  }
+  .icon-btn:active{transform:scale(.92)}
+  .icon-btn.off{background:#ffe4e4;opacity:.75}
+
+  .timer-wrap{display:flex;align-items:center;gap:10px;margin:14px 0 4px}
+  .timer-track{flex:1;height:16px;background:#e9ecf7;border-radius:999px;overflow:hidden}
+  .timer-fill{height:100%;width:100%;border-radius:999px;background:linear-gradient(90deg,#34c759,#7ee7a0);transition:width .1s linear}
+  .timer-fill.warn{background:linear-gradient(90deg,#ffb020,#ffd76e)}
+  .timer-fill.danger{background:linear-gradient(90deg,#ff5c5c,#ff9a9a);animation:blink .55s ease-in-out infinite}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.45}}
+  .timer-num{font-size:16px;font-weight:900;color:#34c759;min-width:36px;text-align:right}
+  .timer-num.warn{color:#e08a00}
+  .timer-num.danger{color:#e63b3b}
+
+  .mascot-row{display:flex;align-items:center;gap:10px;margin:14px 0 12px}
+  .mascot{font-size:38px;line-height:1;animation:bob 2.4s ease-in-out infinite;flex:0 0 auto}
+  .bubble{
+    position:relative;background:#f2f6ff;border:2px solid #dfe8ff;border-radius:16px;
+    padding:9px 15px;font-size:15px;font-weight:800;color:#5b8def;flex:1;
+    min-height:42px;display:flex;align-items:center;
+  }
+  .bubble::before{
+    content:"";position:absolute;left:-9px;top:50%;transform:translateY(-50%);
+    border:8px solid transparent;border-right-color:#dfe8ff;
+  }
+
+  .answer-box{
+    min-height:96px;border:3px dashed #b9c7f0;border-radius:20px;background:#fbfcff;
+    padding:12px;display:flex;flex-wrap:wrap;gap:8px;align-items:flex-start;
+    transition:border-color .2s ease,background .2s ease;
+  }
+  .answer-box.correct{border-color:#34c759;background:#f0fff6;border-style:solid}
+  .answer-box.wrong{border-color:#ff9a9a;background:#fff6f6;border-style:solid}
+  .answer-box .ph{color:#a9b1c9;font-size:14px;font-weight:600;padding:6px 4px}
+
+  .word-card{
+    font-family:inherit;font-size:clamp(19px,3.4vw,26px);font-weight:800;
+    color:#2b2d42;background:#fff;border:3px solid #e2e8f8;border-radius:14px;
+    padding:9px 16px;cursor:pointer;line-height:1.25;
+    box-shadow:0 3px 0 #eef1fa;
+    transition:transform .14s ease,box-shadow .14s ease,border-color .14s ease,background .14s ease;
+    animation:popIn .25s ease both;
+  }
+  @keyframes popIn{from{opacity:0;transform:scale(.86)}to{opacity:1;transform:scale(1)}}
+  .word-card:active{transform:translateY(3px);box-shadow:0 0 0 #eef1fa}
+  @media(hover:hover){.word-card:hover{border-color:#9b7bff;transform:translateY(-2px)}}
+  .word-card.placed{background:#f4f0ff;border-color:#c9b8ff;color:#5b3fd1}
+  .word-card.ok{background:#e9fff3;border-color:#34c759;color:#127a3c;box-shadow:0 3px 0 #bfe9cf}
+  .word-card.no{background:#fff0f0;border-color:#ff9a9a;color:#c22a2a;box-shadow:0 3px 0 #f6cccc}
+  .word-card.locked{cursor:default}
+  .period{font-size:clamp(19px,3.4vw,26px);font-weight:900;color:#5b8def;align-self:center;padding-left:2px}
+
+  .pool-box{
+    min-height:78px;margin-top:12px;padding:12px;border-radius:20px;
+    background:linear-gradient(160deg,#fffdf5,#fff8ec);border:2px solid #ffe8bf;
+    display:flex;flex-wrap:wrap;gap:8px;align-items:flex-start;
+  }
+
+  .controls{display:grid;grid-template-columns:1fr 1fr 1.4fr;gap:8px;margin-top:14px}
+  .btn-ctrl,.btn-check{
+    font-family:inherit;font-size:14.5px;font-weight:900;padding:14px 6px;border-radius:16px;
+    border:none;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease;
+  }
+  .btn-ctrl{background:#eef2ff;color:#4a76d1;box-shadow:0 4px 0 #dbe4ff}
+  .btn-ctrl:active{transform:translateY(4px);box-shadow:0 0 0 #dbe4ff}
+  .btn-check{background:linear-gradient(135deg,#34c759,#7ee7a0);color:#fff;box-shadow:0 4px 0 #27a848}
+  .btn-check:active{transform:translateY(4px);box-shadow:0 0 0 #27a848}
+  .btn-check:disabled{background:#dfe4ee;color:#a6adc0;box-shadow:0 4px 0 #cfd6e4;cursor:not-allowed}
+
+  .feedback{margin-top:14px;border-radius:18px;padding:0 16px;max-height:0;overflow:hidden;opacity:0;transition:all .3s ease}
+  .feedback.show{max-height:520px;opacity:1;padding:15px 16px}
+  .feedback.ok{background:#effff6;border:2.5px solid #9be9b9}
+  .feedback.no{background:#fff6f6;border:2.5px solid #ffc2c2}
+  .fb-head{font-size:16px;font-weight:900;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+  .feedback.ok .fb-head{color:#12864a}
+  .feedback.no .fb-head{color:#c22a2a}
+  .fb-target{font-size:clamp(18px,3.2vw,23px);font-weight:800;color:#2b2d42;line-height:1.6;margin-bottom:8px;letter-spacing:1px}
+  .fb-note{font-size:13.5px;color:#6b7280;line-height:1.6}
+  .fb-actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+  .btn-mini{
+    font-family:inherit;font-size:13.5px;font-weight:800;border:none;cursor:pointer;
+    padding:9px 15px;border-radius:12px;background:#eef2ff;color:#4a76d1;
+  }
+  .btn-mini:active{transform:scale(.96)}
+
+  .btn-next{
+    width:100%;margin-top:14px;padding:17px;border:none;border-radius:18px;cursor:pointer;
+    font-family:inherit;font-size:17px;font-weight:900;color:#fff;
+    background:linear-gradient(135deg,#5b8def,#9b7bff);box-shadow:0 6px 0 #4a76d1;
+    transition:transform .15s ease,box-shadow .15s ease;
+  }
+  .btn-next:active{transform:translateY(5px);box-shadow:0 1px 0 #4a76d1}
+
+  /* ============ RESULT ============ */
+  .res-emoji{font-size:64px;text-align:center;line-height:1;animation:bob 2s ease-in-out infinite}
+  .res-title{text-align:center;font-size:clamp(21px,3.6vw,27px);font-weight:900;color:#5b8def;margin:8px 0 4px}
+  .res-score{
+    text-align:center;font-size:clamp(38px,7vw,54px);font-weight:900;margin:6px 0 4px;
+    background:linear-gradient(90deg,#34c759,#5b8def,#9b7bff);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .res-sub{text-align:center;font-size:14px;color:#7a7f9a;font-weight:700;margin-bottom:16px}
+  .stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:18px}
+  .stat{background:#f7f9ff;border-radius:16px;padding:13px;text-align:center;border:2px solid #eef2ff}
+  .stat .k{font-size:12px;color:#8b90a8;font-weight:800;letter-spacing:.5px}
+  .stat .v{font-size:21px;font-weight:900;color:#2b2d42;margin-top:3px}
+  .stat.good .v{color:#12864a}
+  .stat.bad .v{color:#c22a2a}
+  .stat.miss .v{color:#e08a00}
+  .res-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .btn-big{
+    font-family:inherit;font-size:16px;font-weight:900;padding:16px 8px;border:none;border-radius:18px;
+    cursor:pointer;color:#fff;transition:transform .15s ease,box-shadow .15s ease;
+  }
+  .btn-big.again{background:linear-gradient(135deg,#34c759,#7ee7a0);box-shadow:0 5px 0 #27a848}
+  .btn-big.home{background:linear-gradient(135deg,#5b8def,#9b7bff);box-shadow:0 5px 0 #4a76d1}
+  .btn-big:active{transform:translateY(4px);box-shadow:none}
+
+  .confetti{position:fixed;top:-20px;width:11px;height:11px;border-radius:3px;pointer-events:none;z-index:99;animation:fall linear forwards}
+  @keyframes fall{to{transform:translateY(105vh) rotate(720deg);opacity:.2}}
+
+  .toast{
+    position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);
+    background:rgba(43,45,66,.94);color:#fff;font-size:14px;font-weight:700;
+    padding:12px 20px;border-radius:14px;opacity:0;pointer-events:none;
+    transition:all .3s ease;z-index:200;max-width:92vw;text-align:center;line-height:1.5;
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  @media(max-width:520px){
+    .panel{padding:16px;border-radius:22px}
+    .level-card{padding:11px 4px}
+    .level-card .lv-name{font-size:13.5px}
+    .word-card{padding:8px 12px}
+    .controls{grid-template-columns:1fr 1fr}
+    .btn-check{grid-column:1 / -1}
+    .stat-grid{grid-template-columns:1fr 1fr}
+    .mascot{font-size:30px}
+    .global-brand{padding:8px 12px}
+    .gb-emoji{font-size:22px}
+  }
+</style>
+</head>
+<body>
+
+<div class="deco" aria-hidden="true">
+  <span>📚</span><span>✏️</span><span>⭐</span><span>☁️</span><span>🐼</span><span>🎈</span>
+</div>
+
+<main id="app">
+
+  <!-- ===== HEADER BRAND (SELALU TAMPIL) ===== -->
+  <header class="global-brand">
+    <div class="gb-left">
+      <span class="gb-emoji">🐼</span>
+      <div class="gb-text">
+        <div class="gb-title">HSK 连词成句</div>
+        <div class="gb-id">by lcnpalembang-08994477998</div>
+      </div>
+    </div>
+    <button id="btnSoundGlobal" class="icon-btn" title="Suara">🔊</button>
+  </header>
+
+  <!-- ================= HOME ================= -->
+  <section id="screen-home" class="screen active">
+    <div class="panel">
+      <div style="text-align:center;font-size:56px;line-height:1;margin:2px 0 8px">🐼</div>
+      <p class="subtitle">汉字排排队！</p>
+      <p class="desc">Susun kartu Hanzi menjadi kalimat Mandarin yang benar.<br>Kosakata 100% dari daftar HSK 1 &amp; HSK 2.</p>
+
+      <div class="section-label">Pilih Level</div>
+      <div class="level-grid" id="levelGrid">
+        <button class="level-card selected" data-level="L1">
+          <span class="lv-icon">🌱</span>
+          <span class="lv-name">Level 1</span>
+          <span class="lv-sub">HSK 1</span>
+        </button>
+        <button class="level-card" data-level="L2">
+          <span class="lv-icon">🌟</span>
+          <span class="lv-name">Level 2</span>
+          <span class="lv-sub">HSK 1 + 2</span>
+        </button>
+        <button class="level-card" data-level="L3">
+          <span class="lv-icon">🔥</span>
+          <span class="lv-name">Level 3</span>
+          <span class="lv-sub">Gabungan</span>
+        </button>
+      </div>
+
+      <div class="section-label">Jumlah Soal</div>
+      <div class="count-grid" id="countGrid">
+        <button class="count-card selected" data-count="10">10</button>
+        <button class="count-card" data-count="20">20</button>
+        <button class="count-card" data-count="30">30</button>
+      </div>
+
+      <button id="btnStart" class="btn-start">▶ Mulai Bermain</button>
+      <p class="hint">⏱ Setiap soal <b>10 detik</b>. Ketuk kartu untuk menyusun, ketuk lagi untuk mengembalikan.<br>Jawaban benar <b>+10 poin</b>.</p>
+    </div>
+  </section>
+
+  <!-- ================= GAME ================= -->
+  <section id="screen-game" class="screen">
+    <div class="panel">
+      <div class="hud">
+        <div class="hud-left">
+          <span class="badge" id="hudLevel">Level 1</span>
+          <span class="badge" id="hudProgress">1 / 10</span>
+        </div>
+        <div class="hud-right">
+          <span class="badge score">⭐ <span id="hudScore">0</span></span>
+        </div>
+      </div>
+
+      <div class="timer-wrap">
+        <div class="timer-track"><div id="timerFill" class="timer-fill"></div></div>
+        <div id="timerNum" class="timer-num">10</div>
+      </div>
+
+      <div class="mascot-row">
+        <div class="mascot" id="mascot">🐼</div>
+        <div class="bubble" id="bubble">很好！</div>
+      </div>
+
+      <div class="answer-box" id="answerBox">
+        <span class="ph" id="answerPh">Ketuk kartu di bawah untuk menyusun kalimat…</span>
+      </div>
+
+      <div class="pool-box" id="poolBox"></div>
+
+      <div class="controls">
+        <button id="btnUndo" class="btn-ctrl">↩ Hapus</button>
+        <button id="btnReset" class="btn-ctrl">🔄 Ulangi</button>
+        <button id="btnCheck" class="btn-check" disabled>✔ Periksa</button>
+      </div>
+
+      <div class="feedback" id="feedback"></div>
+
+      <button id="btnNext" class="btn-next" style="display:none">Soal Berikutnya ➡</button>
+    </div>
+  </section>
+
+  <!-- ================= RESULT ================= -->
+  <section id="screen-result" class="screen">
+    <div class="panel">
+      <div class="res-emoji" id="resEmoji">🎉</div>
+      <div class="res-title" id="resTitle">Selesai!</div>
+      <div class="res-score" id="resScore">0</div>
+      <div class="res-sub" id="resSub">dari 10 soal</div>
+
+      <div class="stat-grid">
+        <div class="stat good"><div class="k">BENAR</div><div class="v" id="stCorrect">0</div></div>
+        <div class="stat bad"><div class="k">SALAH</div><div class="v" id="stWrong">0</div></div>
+        <div class="stat miss"><div class="k">WAKTU HABIS</div><div class="v" id="stMiss">0</div></div>
+        <div class="stat"><div class="k">AKURASI</div><div class="v" id="stAcc">0%</div></div>
+        <div class="stat"><div class="k">TOTAL WAKTU</div><div class="v" id="stTime">0:00</div></div>
+        <div class="stat"><div class="k">LEVEL</div><div class="v" id="stLevel">1</div></div>
+      </div>
+
+      <div class="res-actions">
+        <button class="btn-big again" id="btnAgain">🔁 Main Lagi</button>
+        <button class="btn-big home" id="btnHome">🏠 Menu</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+'use strict';
+
+/* =========================================================
+   1. BANK KOSAKATA — HANYA DARI DUA FILE TXT
+   ========================================================= */
+const HSK1_VOCAB = `
+大家 好 学生 们 老师 您 你们 谢谢 不客气 同学 再见
+请问 你 叫 什么 名字 我 不 是 对不起 没关系 没事 很 高兴 认识 也
+人 的 中国 法国 中文 这 谁 女朋友 哪 国 她 泰国 喂 姐姐 工作 还 忙 吗 对 太 我们 想
+有 多少 个 哥哥 呢 没有 家 几 口 爸爸 妈妈 妹妹 和 儿子 孩子 女儿 岁 他 今年 多 大
+今天 号 月 日 星期 星期日 星期天 休息 会 做饭 做 面条儿 饺子 一些 菜 下班 新 电脑 真 好看 喜欢 它
+手机 电话 明天 去 哪儿 超市 买 东西 些 牛奶 吃 晚饭 那边 包子 非常 好吃 米饭 怎么 坐 出租车 西安饭店
+现在 点 早上 上午 分 课 下午 见 吧 电影院 看 电影 事 上课 呢 半 下课 在 里 晚上 医院 上班 分钟 后
+房间 外 只 小 猫 没 看见 桌子 下 漂亮 学校 书店 前 能 到 午饭 饭 病人 医生
+前边 边 那个 外边 椅子 上 本 书 那 第 做 白天 读书 朋友 唱 歌 好听 电视 狗 玩
+杯子 售货员 这边 钱 这些 快 那些 这儿 水果 少 斤 苹果 便宜 商店 衣服 件 元 怎么样 贵 穿 女 男 那儿 块
+时候 饭店 知道 正在 找 开车 车 读 大学 大学生 学 医 弟弟 起床 睡觉 睡 那里 哪里 昨天 问 说 要 小朋友
+天气 这里 天 下雨 了 雨 有点儿 觉得 冷 雪 来 公司 生病 看病 病 一点儿 药 回 再 喝 热 水
+可以 问题 卖 打电话 一下 服务员 女士 请 给 杯 早饭 这个 面包 鸡蛋
+火车 中午 开 有些 有的 都 听见 不要 说话 听 哪些 字 汉语 汉字 明年 中学 小学 中学生 小学生 上学 他们 她们 它们 晚
+爱 哪个 去年 男朋友 几 年 好玩儿 北京 西安 飞机 小时 家人 时间 机场 接 住 早 大兴机场
+`;
+
+const HSK2_VOCAB = `
+就 给 让 接 次 旅游 帮忙 不好意思 已经 那 介绍 有时 懂 意思 北京烤鸭
+公交车 但 车站 远 打车 还是 北京大学 啊 万 名 网上 外国 间 教室 票 别
+回来 这么 完 一起 出去 洗 自己 拿 手 为什么 不错 送 回去 每 累
+过 商场 进去 条 裤子 白色 因为 试 红色 所以 书包 过去 绿色 黑色 更
+快 下来 上来 上去 下面 面 等 一会儿 下去 进来 爷爷 奶奶 礼物 准备 奶茶 跟 酒店
+生日 忘 画 画笔 蛋糕 快乐 打开 长 鱼 肉 地 床 舒服
+从 往 跑 打 篮球 运动 踢 足球 球 得 跑步 游泳 游 爱好 开始
+手表 左边 左 比 右边 右 记得 爱情片 有意思 虽然 但是 花 妻子 丈夫 饭馆
+坏 旁边 男孩儿 这样 个子 那么 高 门口 咖啡 离 近 走 走路 周
+开学 门 后面 笔 帮 考试 词 本子 错 题 考 快要 笑
+头 疼 经常 动 着 路上 慢 进 身体 时 最 药店
+事情 晴 正 外面 阴 从小 地铁 楼 站 小时候
+新年 教 希望 上面 洗手间 里面 可能 上网 那样 告诉 班
+包 过年 没意思 位 前面 房间 小孩儿 女孩儿 姓 眼睛 跳舞
+姓名 出国 门票 高中 出门 路 颐和园 机票 飞 好像 鸟
+`;
+
+function tokenizeVocab(txt){
+  return txt.split(/[\s，,。、；;：:？！?!"'“”‘’()（）\[\]【】\/\\|]+/).filter(Boolean);
+}
+const ALLOWED_WORDS = new Set();
+const ALLOWED_CHARS = new Set();
+[HSK1_VOCAB, HSK2_VOCAB].forEach(function(txt){
+  tokenizeVocab(txt).forEach(function(w){
+    ALLOWED_WORDS.add(w);
+    for(const ch of w){
+      if(/[\u4e00-\u9fff]/.test(ch)) ALLOWED_CHARS.add(ch);
+    }
+  });
+});
+
+/* =========================================================
+   2. BANK KALIMAT (sudah disusun & divalidasi)
+   ========================================================= */
+const RAW_SENTENCES = [
+  /* ---------------- LEVEL 1 : murni HSK 1 ---------------- */
+  {lv:1, s:'我 是 学生'},
+  {lv:1, s:'你 是 老师 吗'},
+  {lv:1, s:'我 也 是 学生'},
+  {lv:1, s:'他 是 医生'},
+  {lv:1, s:'我 有 哥哥 和 妹妹'},
+  {lv:1, s:'今年 他 几 岁'},
+  {lv:1, s:'你 家 有 几 口 人'},
+  {lv:1, s:'今天 是 星期天'},
+  {lv:1, s:'明天 我 去 超市 买 东西'},
+  {lv:1, s:'我 喜欢 吃 米饭'},
+  {lv:1, s:'我 不 喝 牛奶'},
+  {lv:1, s:'这 是 我 的 书'},
+  {lv:1, s:'我 想 买 苹果'},
+  {lv:1, s:'苹果 很 便宜'},
+  {lv:1, s:'这 件 衣服 真 好看'},
+  {lv:1, s:'我 会 做饭'},
+  {lv:1, s:'爸爸 在 家 休息'},
+  {lv:1, s:'弟弟 在 房间 睡觉'},
+  {lv:1, s:'晚上 我 看 电视'},
+  {lv:1, s:'他 在 医院 工作'},
+  {lv:1, s:'昨天 我 去 书店 买 书'},
+  {lv:1, s:'上午 他 有 课'},
+  {lv:1, s:'你 认识 他 吗'},
+  {lv:1, s:'我 的 电脑 很 新'},
+  {lv:1, s:'这 个 字 怎么 读'},
+  {lv:1, s:'现在 我 去 学校'},
+  {lv:1, s:'她 是 我 的 姐姐'},
+  {lv:1, s:'他 没有 孩子'},
+  {lv:1, s:'我 妈妈 是 老师'},
+  {lv:1, s:'这 是 什么'},
+  {lv:1, s:'小 猫 很 漂亮'},
+  {lv:1, s:'我 喜欢 那个 杯子'},
+  {lv:1, s:'水 太 热 了'},
+  {lv:1, s:'今天 很 冷'},
+  {lv:1, s:'明天 我 去 北京'},
+  {lv:1, s:'他 去 中国 学 汉语'},
+  {lv:1, s:'这些 苹果 多少 钱'},
+  {lv:1, s:'我 的 手机 在 桌子 上'},
+  {lv:1, s:'中午 我 吃 米饭'},
+  {lv:1, s:'你 要 牛奶 吗'},
+  {lv:1, s:'我 不 认识 他'},
+  {lv:1, s:'他 的 妹妹 很 小'},
+  {lv:1, s:'我 喜欢 吃 饺子'},
+  {lv:1, s:'妈妈 做 的 菜 很 好吃'},
+  {lv:1, s:'下午 我 去 医院'},
+  {lv:1, s:'你 是 哪 国 人'},
+  {lv:1, s:'我 想 喝 水'},
+  {lv:1, s:'他 去 商店 买 水果'},
+  {lv:1, s:'那儿 的 苹果 很 便宜'},
+  {lv:1, s:'我 的 家 很 大'},
+  {lv:1, s:'爸爸 妈妈 都 很 忙'},
+  {lv:1, s:'你 忙 吗'},
+  {lv:1, s:'我 爱 我 的 家'},
+  {lv:1, s:'他 是 我 的 男朋友'},
+  {lv:1, s:'今天 我 不 上班'},
+  {lv:1, s:'早上 我 喝 牛奶'},
+  {lv:1, s:'那 是 我 的 杯子'},
+  {lv:1, s:'老师 请 坐'},
+  {lv:1, s:'我 的 妹妹 会 做饭'},
+
+  /* ---------------- LEVEL 2 : HSK 1 + HSK 2 ---------------- */
+  {lv:2, s:'我们 一起 去 电影院 看 电影'},
+  {lv:2, s:'他 篮球 打 得 很 好'},
+  {lv:2, s:'虽然 今天 很 冷 但是 我 去 跑步 了'},
+  {lv:2, s:'这 个 书包 比 那个 书包 贵'},
+  {lv:2, s:'因为 下雨 所以 我 不 去 学校'},
+  {lv:2, s:'我 每 天 走路 去 学校'},
+  {lv:2, s:'请 你 帮 我 打开 门'},
+  {lv:2, s:'我 已经 吃 过 北京烤鸭 了'},
+  {lv:2, s:'他 从 学校 跑 到 家'},
+  {lv:2, s:'你 快 回来 吧'},
+  {lv:2, s:'我 的 手表 在 左边'},
+  {lv:2, s:'他 给 我 介绍 了 他 的 朋友'},
+  {lv:2, s:'我 不 懂 这个 意思'},
+  {lv:2, s:'你 为什么 不 吃 早饭'},
+  {lv:2, s:'我们 坐 公交车 去 北京大学'},
+  {lv:2, s:'还是 打车 去 车站 吧'},
+  {lv:2, s:'我 想 去 西安 旅游'},
+  {lv:2, s:'他 自己 洗 衣服'},
+  {lv:2, s:'我 的 生日 是 几 月 几 号'},
+  {lv:2, s:'妈妈 给 我 准备 了 礼物'},
+  {lv:2, s:'我 喜欢 喝 奶茶'},
+  {lv:2, s:'他 的 个子 很 高'},
+  {lv:2, s:'门口 有 男孩儿 和 女孩儿'},
+  {lv:2, s:'我 的 家 离 学校 很 近'},
+  {lv:2, s:'快要 上课 了'},
+  {lv:2, s:'考试 开始 了'},
+  {lv:2, s:'这 个 题 我 做 错 了'},
+  {lv:2, s:'老师 教 我们 汉语'},
+  {lv:2, s:'外面 正 下雨 呢'},
+  {lv:2, s:'我 希望 去 中国 过年'},
+  {lv:2, s:'他 告诉 我 他 的 名字'},
+  {lv:2, s:'我 昨天 在 网上 买 了 门票'},
+  {lv:2, s:'我们 从小 是 朋友'},
+  {lv:2, s:'他 的 身体 很 好'},
+  {lv:2, s:'我 要 去 药店 买 药'},
+  {lv:2, s:'你 最 喜欢 哪 个 菜'},
+  {lv:2, s:'他 经常 去 书店 买 书'},
+  {lv:2, s:'我 的 房间 在 楼 上'},
+  {lv:2, s:'地铁 站 离 这儿 远 吗'},
+  {lv:2, s:'他 去 机场 接 朋友'},
+  {lv:2, s:'我 的 机票 在 包 里'},
+  {lv:2, s:'他 不 舒服 要 去 医院'},
+  {lv:2, s:'这 个 星期 我 很 忙'},
+  {lv:2, s:'我们 的 教室 在 楼 上 吗'},
+  {lv:2, s:'他 跑 得 很 快'},
+  {lv:2, s:'他 爱 跳舞'},
+  {lv:2, s:'我 的 眼睛 很 大'},
+  {lv:2, s:'那 个 小孩儿 很 高兴'},
+  {lv:2, s:'我们 坐 地铁 去 机场'},
+  {lv:2, s:'他 在 药店 工作'},
+  {lv:2, s:'我 上网 看 电影'},
+  {lv:2, s:'这 件 衣服 比 那 件 好'},
+  {lv:2, s:'他 每 天 早上 跑步'},
+  {lv:2, s:'我 想 买 这 本 书'},
+  {lv:2, s:'你 的 本子 在 椅子 上'},
+  {lv:2, s:'今天 我 有 考试'},
+  {lv:2, s:'我 的 书包 在 下面'},
+  {lv:2, s:'请 你 进来'},
+  {lv:2, s:'你 别 忘 了 我 的 礼物'}
+];
+
+const VALID_SENTENCES = [];
+RAW_SENTENCES.forEach(function(item){
+  const tokens = item.s.trim().split(/\s+/).filter(Boolean);
+  if(tokens.length < 3) return;
+
+  let ok = true;
+  for(const t of tokens){
+    for(const ch of t){
+      if(/[\u4e00-\u9fff]/.test(ch) && !ALLOWED_CHARS.has(ch)){
+        ok = false; break;
+      }
+    }
+    if(!ok) break;
+    if(t.length > 1 && !ALLOWED_WORDS.has(t)){
+      ok = false; break;
+    }
+  }
+  if(!ok){ console.warn('[VALIDASI GAGAL] soal dibuang:', item.s); return; }
+
+  VALID_SENTENCES.push({
+    lv: item.lv,
+    tokens: tokens,
+    text: tokens.join('')
+  });
+});
+
+const ENCOURAGE_POOL = ['很好！','太好了！','不错！','真好！','谢谢！']
+  .filter(function(p){
+    return [...p].every(function(ch){
+      return !/[\u4e00-\u9fff]/.test(ch) || ALLOWED_CHARS.has(ch);
+    });
+  });
+const ENCOURAGE_RETRY = ['没关系！','没事！']
+  .filter(function(p){
+    return [...p].every(function(ch){
+      return !/[\u4e00-\u9fff]/.test(ch) || ALLOWED_CHARS.has(ch);
+    });
+  });
+
+/* =========================================================
+   3. KONSTANTA & STATE
+   ========================================================= */
+const TIME_LIMIT = 10000;            // <-- 10 DETIK
+const TICK = 100;
+const POINT_PER_CORRECT = 10;
+
+const state = {
+  level: 'L1',
+  count: 10,
+  queue: [],
+  idx: 0,
+  score: 0,
+  correct: 0,
+  wrong: 0,
+  missed: 0,
+  pool: [],
+  answer: [],
+  locked: false,
+  timeLeft: TIME_LIMIT,
+  timerId: null,
+  warned: false,
+  startTime: 0,
+  sessionStart: 0,
+  muted: false
+};
+
+/* =========================================================
+   4. UTIL
+   ========================================================= */
+function $(id){ return document.getElementById(id); }
+function shuffle(a){
+  const arr = a.slice();
+  for(let i = arr.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+function pick(arr){ return arr[Math.floor(Math.random() * arr.length)]; }
+
+let toastTimer = null;
+function toast(msg){
+  const el = $('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ el.classList.remove('show'); }, 2600);
+}
+
+/* =========================================================
+   5. AUDIO
+   ========================================================= */
+let audioCtx = null;
+function ensureAudio(){
+  if(!audioCtx){
+    try{ audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+    catch(e){ audioCtx = null; }
+  }
+  if(audioCtx && audioCtx.state === 'suspended'){ audioCtx.resume(); }
+}
+function tone(freq, delay, dur, type, vol){
+  if(!audioCtx || state.muted) return;
+  const t0 = audioCtx.currentTime + delay;
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.type = type || 'sine';
+  osc.frequency.setValueAtTime(freq, t0);
+  gain.gain.setValueAtTime(0.0001, t0);
+  gain.gain.linearRampToValueAtTime(vol || 0.14, t0 + 0.02);
+  gain.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+  osc.connect(gain); gain.connect(audioCtx.destination);
+  osc.start(t0); osc.stop(t0 + dur + 0.05);
+}
+const SFX = {
+  correct: function(){ ensureAudio(); tone(660,0,.14,'sine',.16); tone(880,.1,.14,'sine',.16); tone(1175,.2,.24,'sine',.15); },
+  wrong:   function(){ ensureAudio(); tone(330,0,.18,'triangle',.13); tone(247,.14,.26,'triangle',.12); },
+  warn:    function(){ ensureAudio(); tone(880,0,.08,'square',.07); },
+  timeout: function(){ ensureAudio(); tone(392,0,.16,'sawtooth',.09); tone(262,.14,.3,'sawtooth',.09); },
+  next:    function(){ ensureAudio(); tone(523,0,.08,'sine',.1); tone(784,.07,.1,'sine',.1); },
+  finish:  function(){ ensureAudio();
+    [523,659,784,1046].forEach(function(f,i){ tone(f, i*0.13, .22, 'sine', .14); });
+  }
+};
+
+/* =========================================================
+   6. TTS Mandarin zh-CN
+   ========================================================= */
+let zhVoice = null;
+
+function findZhVoice(){
+  if(!('speechSynthesis' in window)) return null;
+  const voices = window.speechSynthesis.getVoices() || [];
+  if(!voices.length) return null;
+  let v = voices.find(function(x){ return /^zh[-_]?CN$/i.test(x.lang); });
+  if(!v) v = voices.find(function(x){ return /zh[-_]?CN/i.test(x.lang); });
+  if(!v){
+    v = voices.find(function(x){
+      return /^(zh|cmn)/i.test(x.lang) &&
+             !/TW|HK|Hant|Taiwan|Hong/i.test(x.lang + ' ' + x.name);
+    });
+  }
+  if(!v){
+    v = voices.find(function(x){
+      return /chinese|mandarin|中文|普通话|简体/i.test(x.name) &&
+             !/taiwan|hong|kanton|粤|cantonese/i.test(x.name);
+    });
+  }
+  return v || null;
+}
+function initVoices(){ if('speechSynthesis' in window) zhVoice = findZhVoice(); }
+if('speechSynthesis' in window){
+  initVoices();
+  window.speechSynthesis.onvoiceschanged = initVoices;
+  setTimeout(initVoices, 400);
+  setTimeout(initVoices, 1200);
+}
+function speak(text){
+  if(!('speechSynthesis' in window)){
+    toast('Browser ini belum mendukung pembaca suara (TTS).');
+    return;
+  }
+  if(!zhVoice) zhVoice = findZhVoice();
+  try{
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'zh-CN';
+    u.rate = 0.82;
+    u.pitch = 1;
+    u.volume = 1;
+    if(zhVoice) u.voice = zhVoice;
+    window.speechSynthesis.speak(u);
+    if(!zhVoice){
+      toast('Suara Mandarin (zh-CN) belum tersedia di perangkat ini.');
+    }
+  }catch(e){
+    toast('Tidak dapat memutar suara pada perangkat ini.');
+  }
+}
+
+/* =========================================================
+   7. EFEK VISUAL
+   ========================================================= */
+function confetti(){
+  const colors = ['#5b8def','#9b7bff','#34c759','#ffb020','#ff8fb1','#ffd23f'];
+  for(let i = 0; i < 26; i++){
+    const d = document.createElement('div');
+    d.className = 'confetti';
+    d.style.left = Math.random() * 100 + 'vw';
+    d.style.background = colors[Math.floor(Math.random() * colors.length)];
+    d.style.animationDuration = (1.1 + Math.random() * 0.9) + 's';
+    d.style.animationDelay = (Math.random() * 0.25) + 's';
+    if(Math.random() > 0.5) d.style.borderRadius = '50%';
+    document.body.appendChild(d);
+    setTimeout(function(){ d.remove(); }, 2600);
+  }
+}
+
+/* =========================================================
+   8. NAVIGASI
+   ========================================================= */
+function showScreen(name){
+  ['screen-home','screen-game','screen-result'].forEach(function(id){
+    $(id).classList.remove('active');
+  });
+  $(name).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+/* =========================================================
+   9. MENU
+   ========================================================= */
+$('levelGrid').addEventListener('click', function(e){
+  const btn = e.target.closest('.level-card');
+  if(!btn) return;
+  document.querySelectorAll('.level-card').forEach(function(b){ b.classList.remove('selected'); });
+  btn.classList.add('selected');
+  state.level = btn.dataset.level;
+});
+$('countGrid').addEventListener('click', function(e){
+  const btn = e.target.closest('.count-card');
+  if(!btn) return;
+  document.querySelectorAll('.count-card').forEach(function(b){ b.classList.remove('selected'); });
+  btn.classList.add('selected');
+  state.count = parseInt(btn.dataset.count, 10);
+});
+
+$('btnStart').addEventListener('click', function(){
+  ensureAudio();
+  startGame();
+});
+
+/* Tombol suara GLOBAL (selalu tampil di header) */
+$('btnSoundGlobal').addEventListener('click', function(){
+  state.muted = !state.muted;
+  this.textContent = state.muted ? '🔇' : '🔊';
+  this.classList.toggle('off', state.muted);
+  if(state.muted && 'speechSynthesis' in window) window.speechSynthesis.cancel();
+  if(!state.muted) ensureAudio();
+});
+
+/* =========================================================
+   10. MULAI GAME
+   ========================================================= */
+function poolForLevel(level){
+  if(level === 'L1') return VALID_SENTENCES.filter(function(s){ return s.lv === 1; });
+  if(level === 'L2') return VALID_SENTENCES.filter(function(s){ return s.lv === 2; });
+  return VALID_SENTENCES.slice();
+}
+
+function startGame(){
+  const pool = poolForLevel(state.level);
+  if(!pool.length){
+    toast('Bank soal untuk level ini belum tersedia.');
+    return;
+  }
+  let total = Math.min(state.count, pool.length);
+  if(total < state.count){
+    toast('Bank soal valid hanya ' + pool.length + ' soal. Sesi dimulai dengan ' + total + ' soal.');
+  }
+
+  state.queue = shuffle(pool).slice(0, total);
+  state.idx = 0;
+  state.score = 0;
+  state.correct = 0;
+  state.wrong = 0;
+  state.missed = 0;
+  state.sessionStart = Date.now();
+
+  $('hudScore').textContent = '0';
+  $('hudLevel').textContent =
+    state.level === 'L1' ? 'Level 1 · HSK 1' :
+    state.level === 'L2' ? 'Level 2 · HSK 1+2' : 'Level 3 · Gabungan';
+
+  showScreen('screen-game');
+  renderQuestion();
+}
+
+/* =========================================================
+   11. RENDER SOAL
+   ========================================================= */
+function renderQuestion(){
+  stopTimer();
+  const q = state.queue[state.idx];
+
+  state.locked = false;
+  state.warned = false;
+  state.answer = [];
+  state.pool = shuffle(q.tokens.map(function(w, i){ return { id: i, w: w }; }));
+
+  $('hudProgress').textContent = (state.idx + 1) + ' / ' + state.queue.length;
+  $('bubble').textContent = pick(ENCOURAGE_POOL);
+  $('mascot').textContent = '🐼';
+
+  const fb = $('feedback');
+  fb.className = 'feedback';
+  fb.innerHTML = '';
+
+  $('answerBox').className = 'answer-box';
+  $('answerBox').innerHTML = '<span class="ph" id="answerPh">Ketuk kartu di bawah untuk menyusun kalimat…</span>';
+  $('poolBox').innerHTML = '';
+  $('btnNext').style.display = 'none';
+  $('btnCheck').disabled = true;
+
+  renderCards();
+  SFX.next();
+  startTimer();
+}
+
+function renderCards(){
+  const poolBox = $('poolBox');
+  const ansBox = $('answerBox');
+
+  poolBox.innerHTML = '';
+  state.pool.forEach(function(c){
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'word-card';
+    b.textContent = c.w;
+    b.addEventListener('click', function(){ pickCard(c.id); });
+    poolBox.appendChild(b);
+  });
+
+  ansBox.innerHTML = '';
+  if(state.answer.length === 0){
+    const ph = document.createElement('span');
+    ph.className = 'ph';
+    ph.textContent = 'Ketuk kartu di bawah untuk menyusun kalimat…';
+    ansBox.appendChild(ph);
+  }else{
+    state.answer.forEach(function(c){
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'word-card placed';
+      b.textContent = c.w;
+      b.addEventListener('click', function(){ returnCard(c.id); });
+      ansBox.appendChild(b);
+    });
+    const p = document.createElement('span');
+    p.className = 'period';
+    p.textContent = '。';
+    ansBox.appendChild(p);
+  }
+
+  $('btnCheck').disabled = state.pool.length !== 0 || state.locked;
+}
+
+/* =========================================================
+   12. INTERAKSI KARTU
+   ========================================================= */
+function pickCard(id){
+  if(state.locked) return;
+  const i = state.pool.findIndex(function(c){ return c.id === id; });
+  if(i < 0) return;
+  const card = state.pool.splice(i, 1)[0];
+  state.answer.push(card);
+  ensureAudio();
+  tone(720, 0, .06, 'sine', .07);
+  renderCards();
+}
+
+function returnCard(id){
+  if(state.locked) return;
+  const i = state.answer.findIndex(function(c){ return c.id === id; });
+  if(i < 0) return;
+  const card = state.answer.splice(i, 1)[0];
+  state.pool.push(card);
+  tone(480, 0, .06, 'sine', .07);
+  renderCards();
+}
+
+$('btnUndo').addEventListener('click', function(){
+  if(state.locked || !state.answer.length) return;
+  const card = state.answer.pop();
+  state.pool.push(card);
+  tone(480, 0, .06, 'sine', .07);
+  renderCards();
+});
+
+$('btnReset').addEventListener('click', function(){
+  if(state.locked) return;
+  state.pool = state.pool.concat(state.answer);
+  state.answer = [];
+  state.pool = shuffle(state.pool);
+  tone(420, 0, .08, 'sine', .07);
+  renderCards();
+});
+
+/* =========================================================
+   13. TIMER 10 DETIK
+   ========================================================= */
+function updateTimerUI(){
+  const left = Math.max(0, state.timeLeft);
+  const ratio = left / TIME_LIMIT;
+  const fill = $('timerFill');
+  const num = $('timerNum');
+
+  fill.style.width = (ratio * 100) + '%';
+  num.textContent = Math.ceil(left / 1000);
+
+  fill.classList.remove('warn', 'danger');
+  num.classList.remove('warn', 'danger');
+
+  if(left <= 3000){
+    fill.classList.add('danger');
+    num.classList.add('danger');
+  }else if(left <= 6000){
+    fill.classList.add('warn');
+    num.classList.add('warn');
+  }
+}
+
+function startTimer(){
+  stopTimer();
+  state.timeLeft = TIME_LIMIT;
+  state.warned = false;
+  updateTimerUI();
+
+  state.timerId = setInterval(function(){
+    if(state.locked){ return; }
+    state.timeLeft -= TICK;
+
+    if(state.timeLeft <= 0){
+      state.timeLeft = 0;
+      updateTimerUI();
+      stopTimer();
+      onTimeout();
+      return;
+    }
+    updateTimerUI();
+    if(state.timeLeft <= 4000 && !state.warned){
+      state.warned = true;
+      SFX.warn();
+    }
+  }, TICK);
+}
+
+function stopTimer(){
+  if(state.timerId){ clearInterval(state.timerId); state.timerId = null; }
+}
+
+/* =========================================================
+   14. PERIKSA JAWABAN
+   ========================================================= */
+$('btnCheck').addEventListener('click', function(){
+  if(state.locked) return;
+  if(state.pool.length !== 0){
+    toast('Susun dulu semua kartu, ya!');
+    return;
+  }
+  checkAnswer();
+});
+
+function checkAnswer(){
+  const q = state.queue[state.idx];
+  const userText = state.answer.map(function(c){ return c.w; }).join('');
+  const isCorrect = (userText === q.text);
+
+  state.locked = true;
+  stopTimer();
+  $('btnCheck').disabled = true;
+
+  const ansBox = $('answerBox');
+  const cards = ansBox.querySelectorAll('.word-card');
+
+  if(isCorrect){
+    state.correct++;
+    state.score += POINT_PER_CORRECT;
+    $('hudScore').textContent = state.score;
+
+    ansBox.classList.add('correct');
+    cards.forEach(function(b){ b.classList.add('ok'); });
+    $('mascot').textContent = '🎉';
+
+    confetti();
+    SFX.correct();
+    speak(q.text);
+
+    showFeedback(true, q);
+  }else{
+    state.wrong++;
+    ansBox.classList.add('wrong');
+    cards.forEach(function(b){ b.classList.add('no'); });
+
+    ansBox.style.animation = 'none';
+    void ansBox.offsetWidth;
+    ansBox.style.animation = 'shakeBox .45s ease';
+    $('mascot').textContent = '🤔';
+    SFX.wrong();
+
+    showFeedback(false, q);
+  }
+
+  $('btnNext').style.display = 'block';
+  $('btnNext').textContent = (state.idx === state.queue.length - 1)
+    ? 'Lihat Hasil 🏁' : 'Soal Berikutnya ➡';
+}
+
+(function injectKeyframes(){
+  const st = document.createElement('style');
+  st.textContent = '@keyframes shakeBox{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}55%{transform:translateX(7px)}80%{transform:translateX(-4px)}}';
+  document.head.appendChild(st);
+})();
+
+function onTimeout(){
+  if(state.locked) return;
+  state.locked = true;
+  state.missed++;
+  stopTimer();
+
+  const q = state.queue[state.idx];
+  $('btnCheck').disabled = true;
+
+  const ansBox = $('answerBox');
+  ansBox.classList.add('wrong');
+  $('mascot').textContent = '⏰';
+  SFX.timeout();
+
+  ansBox.innerHTML = '';
+  q.tokens.forEach(function(w){
+    const b = document.createElement('span');
+    b.className = 'word-card ok';
+    b.style.cursor = 'default';
+    b.textContent = w;
+    ansBox.appendChild(b);
+  });
+  const p = document.createElement('span');
+  p.className = 'period';
+  p.textContent = '。';
+  ansBox.appendChild(p);
+
+  const fb = $('feedback');
+  fb.className = 'feedback no show';
+  fb.innerHTML =
+    '<div class="fb-head">⏰ Waktu Habis</div>' +
+    '<div class="fb-target">' + q.text + '。</div>' +
+    '<div class="fb-note">Belum apa-apa, coba lagi di soal berikutnya. ' +
+      (ENCOURAGE_RETRY.length ? pick(ENCOURAGE_RETRY) : '') + '</div>' +
+    '<div class="fb-actions"><button class="btn-mini" id="fbListen">🔈 Dengarkan</button></div>';
+
+  $('fbListen').addEventListener('click', function(){ speak(q.text); });
+
+  $('btnNext').style.display = 'block';
+  $('btnNext').textContent = (state.idx === state.queue.length - 1)
+    ? 'Lihat Hasil 🏁' : 'Soal Berikutnya ➡';
+}
+
+function showFeedback(isCorrect, q){
+  const fb = $('feedback');
+  fb.className = 'feedback ' + (isCorrect ? 'ok' : 'no') + ' show';
+
+  const head = isCorrect
+    ? '✅ 很好！ Jawaban Benar (+10)'
+    : '💡 Belum tepat, ini susunan yang benar';
+
+  fb.innerHTML =
+    '<div class="fb-head">' + head + '</div>' +
+    '<div class="fb-target">' + q.text + '。</div>' +
+    '<div class="fb-note">' +
+      (isCorrect
+        ? 'Susunanmu sudah benar. ' + pick(ENCOURAGE_POOL)
+        : 'Bandingkan dengan susunan di atas, lalu coba lagi di soal berikutnya. ' +
+          (ENCOURAGE_RETRY.length ? pick(ENCOURAGE_RETRY) : '')) +
+    '</div>' +
+    '<div class="fb-actions">' +
+      '<button class="btn-mini" id="fbListen">🔈 Dengarkan</button>' +
+    '</div>';
+
+  $('fbListen').addEventListener('click', function(){ speak(q.text); });
+}
+
+/* =========================================================
+   15. LANJUT SOAL
+   ========================================================= */
+$('btnNext').addEventListener('click', function(){
+  if('speechSynthesis' in window) window.speechSynthesis.cancel();
+  state.idx++;
+  if(state.idx >= state.queue.length){
+    finishGame();
+  }else{
+    renderQuestion();
+  }
+});
+
+/* =========================================================
+   16. HASIL AKHIR
+   ========================================================= */
+function finishGame(){
+  stopTimer();
+  if('speechSynthesis' in window) window.speechSynthesis.cancel();
+
+  const total = state.queue.length;
+  const acc = total ? Math.round((state.correct / total) * 100) : 0;
+  const elapsed = Math.max(0, Math.round((Date.now() - state.sessionStart) / 1000));
+  const mm = Math.floor(elapsed / 60);
+  const ss = elapsed % 60;
+
+  let emoji = '🌱', title = '继续加油！';
+  let msg = 'Terus berlatih, kamu pasti makin hebat!';
+  if(acc >= 90){ emoji = '🏆'; title = '太厉害了！'; msg = 'Luar biasa! Hampir semua benar.'; }
+  else if(acc >= 70){ emoji = '🎉'; title = '很好！'; msg = 'Hebat! Sedikit lagi menuju sempurna.'; }
+  else if(acc >= 50){ emoji = '💪'; title = '不错！'; msg = 'Bagus! Ulangi level ini untuk hasil lebih baik.'; }
+  else { emoji = '📖'; title = '没关系！'; msg = 'Jangan menyerah, coba pelan-pelan lagi ya.'; }
+
+  $('resEmoji').textContent = emoji;
+  $('resTitle').textContent = title;
+  $('resScore').textContent = state.score;
+  $('resSub').textContent = 'dari ' + total + ' soal · ' + msg;
+
+  $('stCorrect').textContent = state.correct;
+  $('stWrong').textContent = state.wrong;
+  $('stMiss').textContent = state.missed;
+  $('stAcc').textContent = acc + '%';
+  $('stTime').textContent = mm + ':' + (ss < 10 ? '0' + ss : ss);
+  $('stLevel').textContent = state.level === 'L1' ? '1' : state.level === 'L2' ? '2' : '3';
+
+  SFX.finish();
+  if(acc >= 70) confetti();
+
+  showScreen('screen-result');
+}
+
+$('btnAgain').addEventListener('click', function(){
+  ensureAudio();
+  startGame();
+});
+$('btnHome').addEventListener('click', function(){
+  if('speechSynthesis' in window) window.speechSynthesis.cancel();
+  stopTimer();
+  showScreen('screen-home');
+});
+
+/* =========================================================
+   17. PAUSE SAAT TAB TERSEMBUNYI
+   ========================================================= */
+document.addEventListener('visibilitychange', function(){
+  if(document.hidden){
+    stopTimer();
+  }else if(
+    !state.locked &&
+    $('screen-game').classList.contains('active') &&
+    state.timerId === null &&
+    state.timeLeft > 0 &&
+    state.queue.length
+  ){
+    state.timerId = setInterval(function(){
+      if(state.locked) return;
+      state.timeLeft -= TICK;
+      if(state.timeLeft <= 0){
+        state.timeLeft = 0;
+        updateTimerUI();
+        stopTimer();
+        onTimeout();
+        return;
+      }
+      updateTimerUI();
+      if(state.timeLeft <= 4000 && !state.warned){ state.warned = true; SFX.warn(); }
+    }, TICK);
+  }
+});
+
+/* =========================================================
+   18. PENCEGAHAN KLIK KANAN / SELEKSI
+   ========================================================= */
+document.addEventListener('contextmenu', function(e){ e.preventDefault(); }, false);
+document.addEventListener('selectstart', function(e){ e.preventDefault(); }, false);
+document.addEventListener('dragstart', function(e){ e.preventDefault(); }, false);
+
+console.log('[HSK 连词成句] Kalimat valid:', VALID_SENTENCES.length,
+  '| HSK1:', VALID_SENTENCES.filter(function(s){return s.lv===1;}).length,
+  '| HSK2:', VALID_SENTENCES.filter(function(s){return s.lv===2;}).length,
+  '| Timer:', TIME_LIMIT/1000, 'detik');
+
+})();
+</script>
+</body>
+</html>
