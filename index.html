@@ -326,7 +326,7 @@
       </div>
 
       <button id="btnStart" class="btn-start">▶ Mulai Bermain</button>
-      <p class="hint">⏱ Setiap soal <b>10 detik</b>. Ketuk kartu untuk menyusun, ketuk lagi untuk mengembalikan.<br>Jawaban benar <b>+10 poin</b>.</p>
+      <p class="hint">⏱ Setiap soal <b>20 detik</b>. Ketuk kartu untuk menyusun, ketuk lagi untuk mengembalikan.<br>Jawaban benar <b>+10 poin</b>.</p>
     </div>
   </section>
 
@@ -345,7 +345,7 @@
 
       <div class="timer-wrap">
         <div class="timer-track"><div id="timerFill" class="timer-fill"></div></div>
-        <div id="timerNum" class="timer-num">10</div>
+        <div id="timerNum" class="timer-num">20</div>
       </div>
 
       <div class="mascot-row">
@@ -625,7 +625,7 @@ const ENCOURAGE_RETRY = ['没关系！','没事！']
 /* =========================================================
    3. KONSTANTA & STATE
    ========================================================= */
-const TIME_LIMIT = 10000;            // <-- 10 DETIK
+const TIME_LIMIT = 20000;            // <-- 20 DETIK
 const TICK = 100;
 const POINT_PER_CORRECT = 10;
 
@@ -1195,7 +1195,7 @@ function finishGame(){
   $('stWrong').textContent = state.wrong;
   $('stMiss').textContent = state.missed;
   $('stAcc').textContent = acc + '%';
-  $('stTime').textContent = mm + ':' + (ss < 10 ? '0' + ss : ss);
+  $('stTime').textContent = mm + ':' + (ss < 20 ? '0' + ss : ss);
   $('stLevel').textContent = state.level === 'L1' ? '1' : state.level === 'L2' ? '2' : '3';
 
   SFX.finish();
@@ -1253,7 +1253,7 @@ document.addEventListener('dragstart', function(e){ e.preventDefault(); }, false
 console.log('[HSK 连词成句] Kalimat valid:', VALID_SENTENCES.length,
   '| HSK1:', VALID_SENTENCES.filter(function(s){return s.lv===1;}).length,
   '| HSK2:', VALID_SENTENCES.filter(function(s){return s.lv===2;}).length,
-  '| Timer:', TIME_LIMIT/1000, 'detik');
+  '| Timer:', TIME_LIMIT/2000, 'detik');
 
 })();
 </script>
