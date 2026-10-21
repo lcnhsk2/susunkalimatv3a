@@ -36,31 +36,6 @@
   .screen.active{display:block;animation:fadeUp .4s ease both}
   @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 
-  /* ===== GLOBAL BRAND HEADER (selalu tampil di setiap halaman) ===== */
-  .global-brand{
-    position:sticky;top:0;z-index:60;
-    display:flex;align-items:center;justify-content:space-between;gap:10px;
-    padding:10px 16px;margin-bottom:12px;
-    background:rgba(255,255,255,.93);
-    -webkit-backdrop-filter:blur(10px);
-    backdrop-filter:blur(10px);
-    border:2px solid #fff;border-radius:18px;
-    box-shadow:0 6px 20px rgba(91,141,239,.14);
-  }
-  .gb-left{display:flex;align-items:center;gap:10px;min-width:0}
-  .gb-emoji{font-size:26px;line-height:1;flex:0 0 auto}
-  .gb-text{min-width:0}
-  .gb-title{
-    font-size:clamp(16px,2.6vw,21px);font-weight:900;letter-spacing:1.5px;
-    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-    background:linear-gradient(90deg,#5b8def,#9b7bff,#ff8fb1,#34c759);
-    -webkit-background-clip:text;background-clip:text;color:transparent;
-  }
-  .gb-id{
-    font-size:clamp(10px,1.7vw,12.5px);font-weight:800;color:#7a7f9a;
-    letter-spacing:.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-  }
-
   .panel{
     background:rgba(255,255,255,.94);
     border:3px solid #fff;
@@ -69,11 +44,19 @@
     padding:22px;
   }
 
-  /* ============ HOME ============ */
-  .subtitle{
-    margin:0 0 4px;font-size:clamp(17px,2.8vw,22px);color:#5b8def;font-weight:800;letter-spacing:3px;text-align:center;
+  /* HOME */
+  .brand{display:flex;align-items:center;gap:14px;justify-content:center;flex-wrap:wrap;text-align:center}
+  .brand-emoji{font-size:52px;line-height:1;animation:bob 2.6s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+  h1.title{
+    margin:0;font-size:clamp(24px,4.4vw,36px);letter-spacing:2px;
+    background:linear-gradient(90deg,#5b8def,#9b7bff,#ff8fb1,#34c759);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    font-weight:900;
   }
-  .desc{text-align:center;color:#6b7280;font-size:clamp(13px,2vw,15px);margin:10px 0 6px;line-height:1.6}
+  .identity{margin:4px 0 0;font-size:clamp(12px,2vw,15px);color:#7a7f9a;font-weight:700;letter-spacing:.4px}
+  .subtitle{margin:6px 0 0;font-size:clamp(16px,2.6vw,20px);color:#5b8def;font-weight:800;letter-spacing:3px}
+  .desc{text-align:center;color:#6b7280;font-size:clamp(13px,2vw,15px);margin:14px 0 6px;line-height:1.6}
 
   .section-label{
     font-size:14px;font-weight:800;color:#5b8def;letter-spacing:1px;
@@ -118,7 +101,7 @@
   .hint{text-align:center;font-size:12.5px;color:#8b90a8;margin:14px 0 0;line-height:1.6}
   .hint b{color:#5b8def}
 
-  /* ============ GAME ============ */
+  /* GAME */
   .hud{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
   .hud-left,.hud-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
   .badge{
@@ -142,6 +125,7 @@
   .timer-num{font-size:16px;font-weight:900;color:#34c759;min-width:36px;text-align:right}
   .timer-num.warn{color:#e08a00}
   .timer-num.danger{color:#e63b3b}
+  .timer-label{font-size:12px;font-weight:800;color:#8b90a8;white-space:nowrap}
 
   .mascot-row{display:flex;align-items:center;gap:10px;margin:14px 0 12px}
   .mascot{font-size:38px;line-height:1;animation:bob 2.4s ease-in-out infinite;flex:0 0 auto}
@@ -222,7 +206,7 @@
   }
   .btn-next:active{transform:translateY(5px);box-shadow:0 1px 0 #4a76d1}
 
-  /* ============ RESULT ============ */
+  /* RESULT */
   .res-emoji{font-size:64px;text-align:center;line-height:1;animation:bob 2s ease-in-out infinite}
   .res-title{text-align:center;font-size:clamp(21px,3.6vw,27px);font-weight:900;color:#5b8def;margin:8px 0 4px}
   .res-score{
@@ -267,8 +251,7 @@
     .btn-check{grid-column:1 / -1}
     .stat-grid{grid-template-columns:1fr 1fr}
     .mascot{font-size:30px}
-    .global-brand{padding:8px 12px}
-    .gb-emoji{font-size:22px}
+    .timer-label{display:none}
   }
 </style>
 </head>
@@ -280,23 +263,17 @@
 
 <main id="app">
 
-  <!-- ===== HEADER BRAND (SELALU TAMPIL) ===== -->
-  <header class="global-brand">
-    <div class="gb-left">
-      <span class="gb-emoji">🐼</span>
-      <div class="gb-text">
-        <div class="gb-title">HSK 连词成句</div>
-        <div class="gb-id">by lcnpalembang-08994477998</div>
-      </div>
-    </div>
-    <button id="btnSoundGlobal" class="icon-btn" title="Suara">🔊</button>
-  </header>
-
-  <!-- ================= HOME ================= -->
+  <!-- HOME -->
   <section id="screen-home" class="screen active">
     <div class="panel">
-      <div style="text-align:center;font-size:56px;line-height:1;margin:2px 0 8px">🐼</div>
-      <p class="subtitle">汉字排排队！</p>
+      <div class="brand">
+        <div class="brand-emoji">🐼</div>
+        <div>
+          <h1 class="title">HSK 连词成句</h1>
+          <p class="identity">by lcnpalembang-08994477998</p>
+          <p class="subtitle">汉字排排队！</p>
+        </div>
+      </div>
       <p class="desc">Susun kartu Hanzi menjadi kalimat Mandarin yang benar.<br>Kosakata 100% dari daftar HSK 1 &amp; HSK 2.</p>
 
       <div class="section-label">Pilih Level</div>
@@ -330,7 +307,7 @@
     </div>
   </section>
 
-  <!-- ================= GAME ================= -->
+  <!-- GAME -->
   <section id="screen-game" class="screen">
     <div class="panel">
       <div class="hud">
@@ -340,12 +317,14 @@
         </div>
         <div class="hud-right">
           <span class="badge score">⭐ <span id="hudScore">0</span></span>
+          <button id="btnSound" class="icon-btn" title="Suara">🔊</button>
         </div>
       </div>
 
       <div class="timer-wrap">
         <div class="timer-track"><div id="timerFill" class="timer-fill"></div></div>
         <div id="timerNum" class="timer-num">20</div>
+        <div class="timer-label">/ 20 dtk</div>
       </div>
 
       <div class="mascot-row">
@@ -371,7 +350,7 @@
     </div>
   </section>
 
-  <!-- ================= RESULT ================= -->
+  <!-- RESULT -->
   <section id="screen-result" class="screen">
     <div class="panel">
       <div class="res-emoji" id="resEmoji">🎉</div>
@@ -404,7 +383,7 @@
 'use strict';
 
 /* =========================================================
-   1. BANK KOSAKATA — HANYA DARI DUA FILE TXT
+   1. BANK KOSAKATA — DARI DUA FILE TXT
    ========================================================= */
 const HSK1_VOCAB = `
 大家 好 学生 们 老师 您 你们 谢谢 不客气 同学 再见
@@ -457,16 +436,16 @@ const ALLOWED_CHARS = new Set();
 });
 
 /* =========================================================
-   2. BANK KALIMAT (sudah disusun & divalidasi)
+   2. BANK KALIMAT TERVALIDASI
    ========================================================= */
 const RAW_SENTENCES = [
-  /* ---------------- LEVEL 1 : murni HSK 1 ---------------- */
+  /* LEVEL 1 — HSK 1 */
   {lv:1, s:'我 是 学生'},
   {lv:1, s:'你 是 老师 吗'},
   {lv:1, s:'我 也 是 学生'},
   {lv:1, s:'他 是 医生'},
   {lv:1, s:'我 有 哥哥 和 妹妹'},
-  {lv:1, s:'今年 他 几 岁'},
+  {lv:1, s:'他 今年 几 岁'},
   {lv:1, s:'你 家 有 几 口 人'},
   {lv:1, s:'今天 是 星期天'},
   {lv:1, s:'明天 我 去 超市 买 东西'},
@@ -479,14 +458,14 @@ const RAW_SENTENCES = [
   {lv:1, s:'我 会 做饭'},
   {lv:1, s:'爸爸 在 家 休息'},
   {lv:1, s:'弟弟 在 房间 睡觉'},
-  {lv:1, s:'晚上 我 看 电视'},
+  {lv:1, s:'我 晚上 看 电视'},
   {lv:1, s:'他 在 医院 工作'},
-  {lv:1, s:'昨天 我 去 书店 买 书'},
-  {lv:1, s:'上午 他 有 课'},
+  {lv:1, s:'我 昨天 去 书店 买 书'},
+  {lv:1, s:'他 上午 有 课'},
   {lv:1, s:'你 认识 他 吗'},
   {lv:1, s:'我 的 电脑 很 新'},
   {lv:1, s:'这 个 字 怎么 读'},
-  {lv:1, s:'现在 我 去 学校'},
+  {lv:1, s:'我 现在 去 学校'},
   {lv:1, s:'她 是 我 的 姐姐'},
   {lv:1, s:'他 没有 孩子'},
   {lv:1, s:'我 妈妈 是 老师'},
@@ -495,7 +474,7 @@ const RAW_SENTENCES = [
   {lv:1, s:'我 喜欢 那个 杯子'},
   {lv:1, s:'水 太 热 了'},
   {lv:1, s:'今天 很 冷'},
-  {lv:1, s:'明天 我 去 北京'},
+  {lv:1, s:'我 明天 去 北京'},
   {lv:1, s:'他 去 中国 学 汉语'},
   {lv:1, s:'这些 苹果 多少 钱'},
   {lv:1, s:'我 的 手机 在 桌子 上'},
@@ -516,12 +495,12 @@ const RAW_SENTENCES = [
   {lv:1, s:'我 爱 我 的 家'},
   {lv:1, s:'他 是 我 的 男朋友'},
   {lv:1, s:'今天 我 不 上班'},
-  {lv:1, s:'早上 我 喝 牛奶'},
+  {lv:1, s:'我 早上 喝 牛奶'},
   {lv:1, s:'那 是 我 的 杯子'},
   {lv:1, s:'老师 请 坐'},
   {lv:1, s:'我 的 妹妹 会 做饭'},
 
-  /* ---------------- LEVEL 2 : HSK 1 + HSK 2 ---------------- */
+  /* LEVEL 2 — HSK 1 + 2 */
   {lv:2, s:'我们 一起 去 电影院 看 电影'},
   {lv:2, s:'他 篮球 打 得 很 好'},
   {lv:2, s:'虽然 今天 很 冷 但是 我 去 跑步 了'},
@@ -587,66 +566,36 @@ const VALID_SENTENCES = [];
 RAW_SENTENCES.forEach(function(item){
   const tokens = item.s.trim().split(/\s+/).filter(Boolean);
   if(tokens.length < 3) return;
-
   let ok = true;
   for(const t of tokens){
     for(const ch of t){
-      if(/[\u4e00-\u9fff]/.test(ch) && !ALLOWED_CHARS.has(ch)){
-        ok = false; break;
-      }
+      if(/[\u4e00-\u9fff]/.test(ch) && !ALLOWED_CHARS.has(ch)){ ok = false; break; }
     }
     if(!ok) break;
-    if(t.length > 1 && !ALLOWED_WORDS.has(t)){
-      ok = false; break;
-    }
+    if(t.length > 1 && !ALLOWED_WORDS.has(t)){ ok = false; break; }
   }
-  if(!ok){ console.warn('[VALIDASI GAGAL] soal dibuang:', item.s); return; }
-
-  VALID_SENTENCES.push({
-    lv: item.lv,
-    tokens: tokens,
-    text: tokens.join('')
-  });
+  if(!ok){ console.warn('[VALIDASI GAGAL]', item.s); return; }
+  VALID_SENTENCES.push({ lv:item.lv, tokens:tokens, text:tokens.join('') });
 });
 
 const ENCOURAGE_POOL = ['很好！','太好了！','不错！','真好！','谢谢！']
-  .filter(function(p){
-    return [...p].every(function(ch){
-      return !/[\u4e00-\u9fff]/.test(ch) || ALLOWED_CHARS.has(ch);
-    });
-  });
+  .filter(function(p){ return [...p].every(function(ch){ return !/[\u4e00-\u9fff]/.test(ch) || ALLOWED_CHARS.has(ch); }); });
 const ENCOURAGE_RETRY = ['没关系！','没事！']
-  .filter(function(p){
-    return [...p].every(function(ch){
-      return !/[\u4e00-\u9fff]/.test(ch) || ALLOWED_CHARS.has(ch);
-    });
-  });
+  .filter(function(p){ return [...p].every(function(ch){ return !/[\u4e00-\u9fff]/.test(ch) || ALLOWED_CHARS.has(ch); }); });
 
 /* =========================================================
-   3. KONSTANTA & STATE
+   3. KONSTANTA — WAKTU 20 DETIK
    ========================================================= */
-const TIME_LIMIT = 20000;            // <-- 20 DETIK
+const TIME_LIMIT = 20000;      // 20 detik = 20.000 ms
 const TICK = 100;
 const POINT_PER_CORRECT = 10;
 
 const state = {
-  level: 'L1',
-  count: 10,
-  queue: [],
-  idx: 0,
-  score: 0,
-  correct: 0,
-  wrong: 0,
-  missed: 0,
-  pool: [],
-  answer: [],
-  locked: false,
-  timeLeft: TIME_LIMIT,
-  timerId: null,
-  warned: false,
-  startTime: 0,
-  sessionStart: 0,
-  muted: false
+  level:'L1', count:10, queue:[], idx:0,
+  score:0, correct:0, wrong:0, missed:0,
+  pool:[], answer:[], locked:false,
+  timeLeft:TIME_LIMIT, timerId:null, warned:false,
+  sessionStart:0, muted:false
 };
 
 /* =========================================================
@@ -655,128 +604,87 @@ const state = {
 function $(id){ return document.getElementById(id); }
 function shuffle(a){
   const arr = a.slice();
-  for(let i = arr.length - 1; i > 0; i--){
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
+  for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; }
   return arr;
 }
-function pick(arr){ return arr[Math.floor(Math.random() * arr.length)]; }
+function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 
-let toastTimer = null;
+let toastTimer=null;
 function toast(msg){
-  const el = $('toast');
-  el.textContent = msg;
-  el.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(function(){ el.classList.remove('show'); }, 2600);
+  const el=$('toast'); el.textContent=msg; el.classList.add('show');
+  clearTimeout(toastTimer); toastTimer=setTimeout(function(){ el.classList.remove('show'); },2600);
 }
 
 /* =========================================================
    5. AUDIO
    ========================================================= */
-let audioCtx = null;
+let audioCtx=null;
 function ensureAudio(){
-  if(!audioCtx){
-    try{ audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
-    catch(e){ audioCtx = null; }
-  }
-  if(audioCtx && audioCtx.state === 'suspended'){ audioCtx.resume(); }
+  if(!audioCtx){ try{ audioCtx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ audioCtx=null; } }
+  if(audioCtx && audioCtx.state==='suspended'){ audioCtx.resume(); }
 }
-function tone(freq, delay, dur, type, vol){
-  if(!audioCtx || state.muted) return;
-  const t0 = audioCtx.currentTime + delay;
-  const osc = audioCtx.createOscillator();
-  const gain = audioCtx.createGain();
-  osc.type = type || 'sine';
-  osc.frequency.setValueAtTime(freq, t0);
-  gain.gain.setValueAtTime(0.0001, t0);
-  gain.gain.linearRampToValueAtTime(vol || 0.14, t0 + 0.02);
-  gain.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+function tone(freq,delay,dur,type,vol){
+  if(!audioCtx||state.muted) return;
+  const t0=audioCtx.currentTime+delay;
+  const osc=audioCtx.createOscillator(), gain=audioCtx.createGain();
+  osc.type=type||'sine'; osc.frequency.setValueAtTime(freq,t0);
+  gain.gain.setValueAtTime(0.0001,t0);
+  gain.gain.linearRampToValueAtTime(vol||0.14,t0+0.02);
+  gain.gain.exponentialRampToValueAtTime(0.0001,t0+dur);
   osc.connect(gain); gain.connect(audioCtx.destination);
-  osc.start(t0); osc.stop(t0 + dur + 0.05);
+  osc.start(t0); osc.stop(t0+dur+0.05);
 }
-const SFX = {
-  correct: function(){ ensureAudio(); tone(660,0,.14,'sine',.16); tone(880,.1,.14,'sine',.16); tone(1175,.2,.24,'sine',.15); },
-  wrong:   function(){ ensureAudio(); tone(330,0,.18,'triangle',.13); tone(247,.14,.26,'triangle',.12); },
-  warn:    function(){ ensureAudio(); tone(880,0,.08,'square',.07); },
-  timeout: function(){ ensureAudio(); tone(392,0,.16,'sawtooth',.09); tone(262,.14,.3,'sawtooth',.09); },
-  next:    function(){ ensureAudio(); tone(523,0,.08,'sine',.1); tone(784,.07,.1,'sine',.1); },
-  finish:  function(){ ensureAudio();
-    [523,659,784,1046].forEach(function(f,i){ tone(f, i*0.13, .22, 'sine', .14); });
-  }
+const SFX={
+  correct:function(){ ensureAudio(); tone(660,0,.14,'sine',.16); tone(880,.1,.14,'sine',.16); tone(1175,.2,.24,'sine',.15); },
+  wrong:function(){ ensureAudio(); tone(330,0,.18,'triangle',.13); tone(247,.14,.26,'triangle',.12); },
+  warn:function(){ ensureAudio(); tone(880,0,.08,'square',.07); },
+  timeout:function(){ ensureAudio(); tone(392,0,.16,'sawtooth',.09); tone(262,.14,.3,'sawtooth',.09); },
+  next:function(){ ensureAudio(); tone(523,0,.08,'sine',.1); tone(784,.07,.1,'sine',.1); },
+  finish:function(){ ensureAudio(); [523,659,784,1046].forEach(function(f,i){ tone(f,i*0.13,.22,'sine',.14); }); }
 };
 
 /* =========================================================
-   6. TTS Mandarin zh-CN
+   6. TTS zh-CN
    ========================================================= */
-let zhVoice = null;
-
+let zhVoice=null;
 function findZhVoice(){
   if(!('speechSynthesis' in window)) return null;
-  const voices = window.speechSynthesis.getVoices() || [];
+  const voices=window.speechSynthesis.getVoices()||[];
   if(!voices.length) return null;
-  let v = voices.find(function(x){ return /^zh[-_]?CN$/i.test(x.lang); });
-  if(!v) v = voices.find(function(x){ return /zh[-_]?CN/i.test(x.lang); });
-  if(!v){
-    v = voices.find(function(x){
-      return /^(zh|cmn)/i.test(x.lang) &&
-             !/TW|HK|Hant|Taiwan|Hong/i.test(x.lang + ' ' + x.name);
-    });
-  }
-  if(!v){
-    v = voices.find(function(x){
-      return /chinese|mandarin|中文|普通话|简体/i.test(x.name) &&
-             !/taiwan|hong|kanton|粤|cantonese/i.test(x.name);
-    });
-  }
-  return v || null;
+  let v=voices.find(function(x){ return /^zh[-_]?CN$/i.test(x.lang); });
+  if(!v) v=voices.find(function(x){ return /zh[-_]?CN/i.test(x.lang); });
+  if(!v) v=voices.find(function(x){ return /^(zh|cmn)/i.test(x.lang) && !/TW|HK|Hant|Taiwan|Hong/i.test(x.lang+' '+x.name); });
+  if(!v) v=voices.find(function(x){ return /chinese|mandarin|中文|普通话|简体/i.test(x.name) && !/taiwan|hong|kanton|粤|cantonese/i.test(x.name); });
+  return v||null;
 }
-function initVoices(){ if('speechSynthesis' in window) zhVoice = findZhVoice(); }
-if('speechSynthesis' in window){
-  initVoices();
-  window.speechSynthesis.onvoiceschanged = initVoices;
-  setTimeout(initVoices, 400);
-  setTimeout(initVoices, 1200);
-}
+function initVoices(){ if(!('speechSynthesis' in window)) return; zhVoice=findZhVoice(); }
+if('speechSynthesis' in window){ initVoices(); window.speechSynthesis.onvoiceschanged=initVoices; setTimeout(initVoices,400); setTimeout(initVoices,1200); }
 function speak(text){
-  if(!('speechSynthesis' in window)){
-    toast('Browser ini belum mendukung pembaca suara (TTS).');
-    return;
-  }
-  if(!zhVoice) zhVoice = findZhVoice();
+  if(!('speechSynthesis' in window)){ toast('Browser ini belum mendukung TTS.'); return; }
+  if(!zhVoice) zhVoice=findZhVoice();
   try{
     window.speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = 'zh-CN';
-    u.rate = 0.82;
-    u.pitch = 1;
-    u.volume = 1;
-    if(zhVoice) u.voice = zhVoice;
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang='zh-CN'; u.rate=0.82; u.pitch=1; u.volume=1;
+    if(zhVoice) u.voice=zhVoice;
     window.speechSynthesis.speak(u);
-    if(!zhVoice){
-      toast('Suara Mandarin (zh-CN) belum tersedia di perangkat ini.');
-    }
-  }catch(e){
-    toast('Tidak dapat memutar suara pada perangkat ini.');
-  }
+    if(!zhVoice) toast('Suara Mandarin (zh-CN) belum tersedia di perangkat ini.');
+  }catch(e){ toast('Tidak dapat memutar suara.'); }
 }
 
 /* =========================================================
    7. EFEK VISUAL
    ========================================================= */
 function confetti(){
-  const colors = ['#5b8def','#9b7bff','#34c759','#ffb020','#ff8fb1','#ffd23f'];
-  for(let i = 0; i < 26; i++){
-    const d = document.createElement('div');
-    d.className = 'confetti';
-    d.style.left = Math.random() * 100 + 'vw';
-    d.style.background = colors[Math.floor(Math.random() * colors.length)];
-    d.style.animationDuration = (1.1 + Math.random() * 0.9) + 's';
-    d.style.animationDelay = (Math.random() * 0.25) + 's';
-    if(Math.random() > 0.5) d.style.borderRadius = '50%';
-    document.body.appendChild(d);
-    setTimeout(function(){ d.remove(); }, 2600);
+  const colors=['#5b8def','#9b7bff','#34c759','#ffb020','#ff8fb1','#ffd23f'];
+  for(let i=0;i<26;i++){
+    const d=document.createElement('div'); d.className='confetti';
+    d.style.left=Math.random()*100+'vw';
+    d.style.background=colors[Math.floor(Math.random()*colors.length)];
+    d.style.animationDuration=(1.1+Math.random()*0.9)+'s';
+    d.style.animationDelay=(Math.random()*0.25)+'s';
+    if(Math.random()>0.5) d.style.borderRadius='50%';
+    document.body.appendChild(d); setTimeout(function(){ d.remove(); },2600);
   }
 }
 
@@ -784,41 +692,28 @@ function confetti(){
    8. NAVIGASI
    ========================================================= */
 function showScreen(name){
-  ['screen-home','screen-game','screen-result'].forEach(function(id){
-    $(id).classList.remove('active');
-  });
-  $(name).classList.add('active');
-  window.scrollTo(0, 0);
+  ['screen-home','screen-game','screen-result'].forEach(function(id){ $(id).classList.remove('active'); });
+  $(name).classList.add('active'); window.scrollTo(0,0);
 }
 
 /* =========================================================
    9. MENU
    ========================================================= */
-$('levelGrid').addEventListener('click', function(e){
-  const btn = e.target.closest('.level-card');
-  if(!btn) return;
+$('levelGrid').addEventListener('click',function(e){
+  const btn=e.target.closest('.level-card'); if(!btn) return;
   document.querySelectorAll('.level-card').forEach(function(b){ b.classList.remove('selected'); });
-  btn.classList.add('selected');
-  state.level = btn.dataset.level;
+  btn.classList.add('selected'); state.level=btn.dataset.level;
 });
-$('countGrid').addEventListener('click', function(e){
-  const btn = e.target.closest('.count-card');
-  if(!btn) return;
+$('countGrid').addEventListener('click',function(e){
+  const btn=e.target.closest('.count-card'); if(!btn) return;
   document.querySelectorAll('.count-card').forEach(function(b){ b.classList.remove('selected'); });
-  btn.classList.add('selected');
-  state.count = parseInt(btn.dataset.count, 10);
+  btn.classList.add('selected'); state.count=parseInt(btn.dataset.count,10);
 });
-
-$('btnStart').addEventListener('click', function(){
-  ensureAudio();
-  startGame();
-});
-
-/* Tombol suara GLOBAL (selalu tampil di header) */
-$('btnSoundGlobal').addEventListener('click', function(){
-  state.muted = !state.muted;
-  this.textContent = state.muted ? '🔇' : '🔊';
-  this.classList.toggle('off', state.muted);
+$('btnStart').addEventListener('click',function(){ ensureAudio(); startGame(); });
+$('btnSound').addEventListener('click',function(){
+  state.muted=!state.muted;
+  this.textContent=state.muted?'🔇':'🔊';
+  this.classList.toggle('off',state.muted);
   if(state.muted && 'speechSynthesis' in window) window.speechSynthesis.cancel();
   if(!state.muted) ensureAudio();
 });
@@ -827,37 +722,21 @@ $('btnSoundGlobal').addEventListener('click', function(){
    10. MULAI GAME
    ========================================================= */
 function poolForLevel(level){
-  if(level === 'L1') return VALID_SENTENCES.filter(function(s){ return s.lv === 1; });
-  if(level === 'L2') return VALID_SENTENCES.filter(function(s){ return s.lv === 2; });
+  if(level==='L1') return VALID_SENTENCES.filter(function(s){ return s.lv===1; });
+  if(level==='L2') return VALID_SENTENCES.filter(function(s){ return s.lv===2; });
   return VALID_SENTENCES.slice();
 }
-
 function startGame(){
-  const pool = poolForLevel(state.level);
-  if(!pool.length){
-    toast('Bank soal untuk level ini belum tersedia.');
-    return;
-  }
-  let total = Math.min(state.count, pool.length);
-  if(total < state.count){
-    toast('Bank soal valid hanya ' + pool.length + ' soal. Sesi dimulai dengan ' + total + ' soal.');
-  }
-
-  state.queue = shuffle(pool).slice(0, total);
-  state.idx = 0;
-  state.score = 0;
-  state.correct = 0;
-  state.wrong = 0;
-  state.missed = 0;
-  state.sessionStart = Date.now();
-
-  $('hudScore').textContent = '0';
-  $('hudLevel').textContent =
-    state.level === 'L1' ? 'Level 1 · HSK 1' :
-    state.level === 'L2' ? 'Level 2 · HSK 1+2' : 'Level 3 · Gabungan';
-
-  showScreen('screen-game');
-  renderQuestion();
+  const pool=poolForLevel(state.level);
+  if(!pool.length){ toast('Bank soal untuk level ini belum tersedia.'); return; }
+  let total=Math.min(state.count,pool.length);
+  if(total<state.count) toast('Bank soal valid hanya '+pool.length+' soal. Sesi dimulai dengan '+total+' soal.');
+  state.queue=shuffle(pool).slice(0,total);
+  state.idx=0; state.score=0; state.correct=0; state.wrong=0; state.missed=0;
+  state.sessionStart=Date.now();
+  $('hudScore').textContent='0';
+  $('hudLevel').textContent=state.level==='L1'?'Level 1 · HSK 1':state.level==='L2'?'Level 2 · HSK 1+2':'Level 3 · Gabungan';
+  showScreen('screen-game'); renderQuestion();
 }
 
 /* =========================================================
@@ -865,68 +744,39 @@ function startGame(){
    ========================================================= */
 function renderQuestion(){
   stopTimer();
-  const q = state.queue[state.idx];
-
-  state.locked = false;
-  state.warned = false;
-  state.answer = [];
-  state.pool = shuffle(q.tokens.map(function(w, i){ return { id: i, w: w }; }));
-
-  $('hudProgress').textContent = (state.idx + 1) + ' / ' + state.queue.length;
-  $('bubble').textContent = pick(ENCOURAGE_POOL);
-  $('mascot').textContent = '🐼';
-
-  const fb = $('feedback');
-  fb.className = 'feedback';
-  fb.innerHTML = '';
-
-  $('answerBox').className = 'answer-box';
-  $('answerBox').innerHTML = '<span class="ph" id="answerPh">Ketuk kartu di bawah untuk menyusun kalimat…</span>';
-  $('poolBox').innerHTML = '';
-  $('btnNext').style.display = 'none';
-  $('btnCheck').disabled = true;
-
-  renderCards();
-  SFX.next();
-  startTimer();
+  const q=state.queue[state.idx];
+  state.locked=false; state.warned=false; state.answer=[];
+  state.pool=shuffle(q.tokens.map(function(w,i){ return { id:i, w:w }; }));
+  $('hudProgress').textContent=(state.idx+1)+' / '+state.queue.length;
+  $('bubble').textContent=pick(ENCOURAGE_POOL);
+  $('mascot').textContent='🐼';
+  const fb=$('feedback'); fb.className='feedback'; fb.innerHTML='';
+  $('answerBox').className='answer-box';
+  $('answerBox').innerHTML='<span class="ph">Ketuk kartu di bawah untuk menyusun kalimat…</span>';
+  $('poolBox').innerHTML='';
+  $('btnNext').style.display='none';
+  $('btnCheck').disabled=true;
+  renderCards(); SFX.next(); startTimer();
 }
-
 function renderCards(){
-  const poolBox = $('poolBox');
-  const ansBox = $('answerBox');
-
-  poolBox.innerHTML = '';
+  const poolBox=$('poolBox'), ansBox=$('answerBox');
+  poolBox.innerHTML='';
   state.pool.forEach(function(c){
-    const b = document.createElement('button');
-    b.type = 'button';
-    b.className = 'word-card';
-    b.textContent = c.w;
-    b.addEventListener('click', function(){ pickCard(c.id); });
-    poolBox.appendChild(b);
+    const b=document.createElement('button'); b.type='button'; b.className='word-card'; b.textContent=c.w;
+    b.addEventListener('click',function(){ pickCard(c.id); }); poolBox.appendChild(b);
   });
-
-  ansBox.innerHTML = '';
-  if(state.answer.length === 0){
-    const ph = document.createElement('span');
-    ph.className = 'ph';
-    ph.textContent = 'Ketuk kartu di bawah untuk menyusun kalimat…';
-    ansBox.appendChild(ph);
+  ansBox.innerHTML='';
+  if(state.answer.length===0){
+    const ph=document.createElement('span'); ph.className='ph';
+    ph.textContent='Ketuk kartu di bawah untuk menyusun kalimat…'; ansBox.appendChild(ph);
   }else{
     state.answer.forEach(function(c){
-      const b = document.createElement('button');
-      b.type = 'button';
-      b.className = 'word-card placed';
-      b.textContent = c.w;
-      b.addEventListener('click', function(){ returnCard(c.id); });
-      ansBox.appendChild(b);
+      const b=document.createElement('button'); b.type='button'; b.className='word-card placed'; b.textContent=c.w;
+      b.addEventListener('click',function(){ returnCard(c.id); }); ansBox.appendChild(b);
     });
-    const p = document.createElement('span');
-    p.className = 'period';
-    p.textContent = '。';
-    ansBox.appendChild(p);
+    const p=document.createElement('span'); p.className='period'; p.textContent='。'; ansBox.appendChild(p);
   }
-
-  $('btnCheck').disabled = state.pool.length !== 0 || state.locked;
+  $('btnCheck').disabled=(state.pool.length!==0)||state.locked;
 }
 
 /* =========================================================
@@ -934,326 +784,182 @@ function renderCards(){
    ========================================================= */
 function pickCard(id){
   if(state.locked) return;
-  const i = state.pool.findIndex(function(c){ return c.id === id; });
-  if(i < 0) return;
-  const card = state.pool.splice(i, 1)[0];
-  state.answer.push(card);
-  ensureAudio();
-  tone(720, 0, .06, 'sine', .07);
-  renderCards();
+  const i=state.pool.findIndex(function(c){ return c.id===id; }); if(i<0) return;
+  const card=state.pool.splice(i,1)[0]; state.answer.push(card);
+  ensureAudio(); tone(720,0,.06,'sine',.07); renderCards();
 }
-
 function returnCard(id){
   if(state.locked) return;
-  const i = state.answer.findIndex(function(c){ return c.id === id; });
-  if(i < 0) return;
-  const card = state.answer.splice(i, 1)[0];
-  state.pool.push(card);
-  tone(480, 0, .06, 'sine', .07);
-  renderCards();
+  const i=state.answer.findIndex(function(c){ return c.id===id; }); if(i<0) return;
+  const card=state.answer.splice(i,1)[0]; state.pool.push(card);
+  tone(480,0,.06,'sine',.07); renderCards();
 }
-
-$('btnUndo').addEventListener('click', function(){
-  if(state.locked || !state.answer.length) return;
-  const card = state.answer.pop();
-  state.pool.push(card);
-  tone(480, 0, .06, 'sine', .07);
-  renderCards();
+$('btnUndo').addEventListener('click',function(){
+  if(state.locked||!state.answer.length) return;
+  const card=state.answer.pop(); state.pool.push(card);
+  tone(480,0,.06,'sine',.07); renderCards();
 });
-
-$('btnReset').addEventListener('click', function(){
+$('btnReset').addEventListener('click',function(){
   if(state.locked) return;
-  state.pool = state.pool.concat(state.answer);
-  state.answer = [];
-  state.pool = shuffle(state.pool);
-  tone(420, 0, .08, 'sine', .07);
-  renderCards();
+  state.pool=state.pool.concat(state.answer); state.answer=[]; state.pool=shuffle(state.pool);
+  tone(420,0,.08,'sine',.07); renderCards();
 });
 
 /* =========================================================
-   13. TIMER 10 DETIK
+   13. TIMER 20 DETIK
    ========================================================= */
 function updateTimerUI(){
-  const left = Math.max(0, state.timeLeft);
-  const ratio = left / TIME_LIMIT;
-  const fill = $('timerFill');
-  const num = $('timerNum');
-
-  fill.style.width = (ratio * 100) + '%';
-  num.textContent = Math.ceil(left / 1000);
-
-  fill.classList.remove('warn', 'danger');
-  num.classList.remove('warn', 'danger');
-
-  if(left <= 3000){
-    fill.classList.add('danger');
-    num.classList.add('danger');
-  }else if(left <= 6000){
-    fill.classList.add('warn');
-    num.classList.add('warn');
-  }
+  const left=Math.max(0,state.timeLeft), ratio=left/TIME_LIMIT;
+  const fill=$('timerFill'), num=$('timerNum');
+  fill.style.width=(ratio*100)+'%';
+  num.textContent=Math.ceil(left/1000);
+  fill.classList.remove('warn','danger'); num.classList.remove('warn','danger');
+  if(left<=5000){ fill.classList.add('danger'); num.classList.add('danger'); }
+  else if(left<=10000){ fill.classList.add('warn'); num.classList.add('warn'); }
 }
-
 function startTimer(){
   stopTimer();
-  state.timeLeft = TIME_LIMIT;
-  state.warned = false;
+  state.timeLeft=TIME_LIMIT;   // mulai dari 20 detik
+  state.warned=false;
   updateTimerUI();
-
-  state.timerId = setInterval(function(){
-    if(state.locked){ return; }
-    state.timeLeft -= TICK;
-
-    if(state.timeLeft <= 0){
-      state.timeLeft = 0;
-      updateTimerUI();
-      stopTimer();
-      onTimeout();
-      return;
-    }
+  state.timerId=setInterval(function(){
+    if(state.locked) return;
+    state.timeLeft-=TICK;
+    if(state.timeLeft<=0){ state.timeLeft=0; updateTimerUI(); stopTimer(); onTimeout(); return; }
     updateTimerUI();
-    if(state.timeLeft <= 4000 && !state.warned){
-      state.warned = true;
-      SFX.warn();
-    }
-  }, TICK);
+    if(state.timeLeft<=5000 && !state.warned){ state.warned=true; SFX.warn(); }
+  },TICK);
 }
-
-function stopTimer(){
-  if(state.timerId){ clearInterval(state.timerId); state.timerId = null; }
-}
+function stopTimer(){ if(state.timerId){ clearInterval(state.timerId); state.timerId=null; } }
 
 /* =========================================================
-   14. PERIKSA JAWABAN
+   14. PERIKSA
    ========================================================= */
-$('btnCheck').addEventListener('click', function(){
+$('btnCheck').addEventListener('click',function(){
   if(state.locked) return;
-  if(state.pool.length !== 0){
-    toast('Susun dulu semua kartu, ya!');
-    return;
-  }
+  if(state.pool.length!==0){ toast('Susun dulu semua kartu, ya!'); return; }
   checkAnswer();
 });
-
 function checkAnswer(){
-  const q = state.queue[state.idx];
-  const userText = state.answer.map(function(c){ return c.w; }).join('');
-  const isCorrect = (userText === q.text);
-
-  state.locked = true;
-  stopTimer();
-  $('btnCheck').disabled = true;
-
-  const ansBox = $('answerBox');
-  const cards = ansBox.querySelectorAll('.word-card');
-
+  const q=state.queue[state.idx];
+  const userText=state.answer.map(function(c){ return c.w; }).join('');
+  const isCorrect=(userText===q.text);
+  state.locked=true; stopTimer(); $('btnCheck').disabled=true;
+  const ansBox=$('answerBox'), cards=ansBox.querySelectorAll('.word-card');
   if(isCorrect){
-    state.correct++;
-    state.score += POINT_PER_CORRECT;
-    $('hudScore').textContent = state.score;
-
-    ansBox.classList.add('correct');
-    cards.forEach(function(b){ b.classList.add('ok'); });
-    $('mascot').textContent = '🎉';
-
-    confetti();
-    SFX.correct();
-    speak(q.text);
-
-    showFeedback(true, q);
+    state.correct++; state.score+=POINT_PER_CORRECT; $('hudScore').textContent=state.score;
+    ansBox.classList.add('correct'); cards.forEach(function(b){ b.classList.add('ok'); });
+    $('mascot').textContent='🎉'; confetti(); SFX.correct(); speak(q.text);
+    showFeedback(true,q);
   }else{
-    state.wrong++;
-    ansBox.classList.add('wrong');
+    state.wrong++; ansBox.classList.add('wrong');
     cards.forEach(function(b){ b.classList.add('no'); });
-
-    ansBox.style.animation = 'none';
-    void ansBox.offsetWidth;
-    ansBox.style.animation = 'shakeBox .45s ease';
-    $('mascot').textContent = '🤔';
-    SFX.wrong();
-
-    showFeedback(false, q);
+    ansBox.style.animation='none'; void ansBox.offsetWidth; ansBox.style.animation='shakeBox .45s ease';
+    $('mascot').textContent='🤔'; SFX.wrong(); showFeedback(false,q);
   }
-
-  $('btnNext').style.display = 'block';
-  $('btnNext').textContent = (state.idx === state.queue.length - 1)
-    ? 'Lihat Hasil 🏁' : 'Soal Berikutnya ➡';
+  $('btnNext').style.display='block';
+  $('btnNext').textContent=(state.idx===state.queue.length-1)?'Lihat Hasil 🏁':'Soal Berikutnya ➡';
 }
-
 (function injectKeyframes(){
-  const st = document.createElement('style');
-  st.textContent = '@keyframes shakeBox{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}55%{transform:translateX(7px)}80%{transform:translateX(-4px)}}';
+  const st=document.createElement('style');
+  st.textContent='@keyframes shakeBox{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}55%{transform:translateX(7px)}80%{transform:translateX(-4px)}}';
   document.head.appendChild(st);
 })();
-
 function onTimeout(){
   if(state.locked) return;
-  state.locked = true;
-  state.missed++;
-  stopTimer();
-
-  const q = state.queue[state.idx];
-  $('btnCheck').disabled = true;
-
-  const ansBox = $('answerBox');
-  ansBox.classList.add('wrong');
-  $('mascot').textContent = '⏰';
-  SFX.timeout();
-
-  ansBox.innerHTML = '';
+  state.locked=true; state.missed++; stopTimer(); $('btnCheck').disabled=true;
+  const q=state.queue[state.idx], ansBox=$('answerBox');
+  ansBox.classList.add('wrong'); $('mascot').textContent='⏰'; SFX.timeout();
+  ansBox.innerHTML='';
   q.tokens.forEach(function(w){
-    const b = document.createElement('span');
-    b.className = 'word-card ok';
-    b.style.cursor = 'default';
-    b.textContent = w;
-    ansBox.appendChild(b);
+    const b=document.createElement('span'); b.className='word-card ok'; b.style.cursor='default'; b.textContent=w; ansBox.appendChild(b);
   });
-  const p = document.createElement('span');
-  p.className = 'period';
-  p.textContent = '。';
-  ansBox.appendChild(p);
-
-  const fb = $('feedback');
-  fb.className = 'feedback no show';
-  fb.innerHTML =
-    '<div class="fb-head">⏰ Waktu Habis</div>' +
-    '<div class="fb-target">' + q.text + '。</div>' +
-    '<div class="fb-note">Belum apa-apa, coba lagi di soal berikutnya. ' +
-      (ENCOURAGE_RETRY.length ? pick(ENCOURAGE_RETRY) : '') + '</div>' +
+  const p=document.createElement('span'); p.className='period'; p.textContent='。'; ansBox.appendChild(p);
+  const fb=$('feedback'); fb.className='feedback no show';
+  fb.innerHTML='<div class="fb-head">⏰ Waktu Habis</div>'+
+    '<div class="fb-target">'+q.text+'。</div>'+
+    '<div class="fb-note">Belum apa-apa, coba lagi di soal berikutnya. '+(ENCOURAGE_RETRY.length?pick(ENCOURAGE_RETRY):'')+'</div>'+
     '<div class="fb-actions"><button class="btn-mini" id="fbListen">🔈 Dengarkan</button></div>';
-
-  $('fbListen').addEventListener('click', function(){ speak(q.text); });
-
-  $('btnNext').style.display = 'block';
-  $('btnNext').textContent = (state.idx === state.queue.length - 1)
-    ? 'Lihat Hasil 🏁' : 'Soal Berikutnya ➡';
+  $('fbListen').addEventListener('click',function(){ speak(q.text); });
+  $('btnNext').style.display='block';
+  $('btnNext').textContent=(state.idx===state.queue.length-1)?'Lihat Hasil 🏁':'Soal Berikutnya ➡';
 }
-
-function showFeedback(isCorrect, q){
-  const fb = $('feedback');
-  fb.className = 'feedback ' + (isCorrect ? 'ok' : 'no') + ' show';
-
-  const head = isCorrect
-    ? '✅ 很好！ Jawaban Benar (+10)'
-    : '💡 Belum tepat, ini susunan yang benar';
-
-  fb.innerHTML =
-    '<div class="fb-head">' + head + '</div>' +
-    '<div class="fb-target">' + q.text + '。</div>' +
-    '<div class="fb-note">' +
-      (isCorrect
-        ? 'Susunanmu sudah benar. ' + pick(ENCOURAGE_POOL)
-        : 'Bandingkan dengan susunan di atas, lalu coba lagi di soal berikutnya. ' +
-          (ENCOURAGE_RETRY.length ? pick(ENCOURAGE_RETRY) : '')) +
-    '</div>' +
-    '<div class="fb-actions">' +
-      '<button class="btn-mini" id="fbListen">🔈 Dengarkan</button>' +
-    '</div>';
-
-  $('fbListen').addEventListener('click', function(){ speak(q.text); });
+function showFeedback(isCorrect,q){
+  const fb=$('feedback'); fb.className='feedback '+(isCorrect?'ok':'no')+' show';
+  fb.innerHTML='<div class="fb-head">'+(isCorrect?'✅ 很好！ Jawaban Benar (+10)':'💡 Belum tepat, ini susunan yang benar')+'</div>'+
+    '<div class="fb-target">'+q.text+'。</div>'+
+    '<div class="fb-note">'+(isCorrect?'Susunanmu sudah benar. '+pick(ENCOURAGE_POOL):'Bandingkan dengan susunan di atas, lalu coba lagi di soal berikutnya. '+(ENCOURAGE_RETRY.length?pick(ENCOURAGE_RETRY):''))+'</div>'+
+    '<div class="fb-actions"><button class="btn-mini" id="fbListen">🔈 Dengarkan</button></div>';
+  $('fbListen').addEventListener('click',function(){ speak(q.text); });
 }
 
 /* =========================================================
-   15. LANJUT SOAL
+   15. LANJUT
    ========================================================= */
-$('btnNext').addEventListener('click', function(){
+$('btnNext').addEventListener('click',function(){
   if('speechSynthesis' in window) window.speechSynthesis.cancel();
   state.idx++;
-  if(state.idx >= state.queue.length){
-    finishGame();
-  }else{
-    renderQuestion();
-  }
+  if(state.idx>=state.queue.length) finishGame(); else renderQuestion();
 });
 
 /* =========================================================
-   16. HASIL AKHIR
+   16. HASIL
    ========================================================= */
 function finishGame(){
   stopTimer();
   if('speechSynthesis' in window) window.speechSynthesis.cancel();
-
-  const total = state.queue.length;
-  const acc = total ? Math.round((state.correct / total) * 100) : 0;
-  const elapsed = Math.max(0, Math.round((Date.now() - state.sessionStart) / 1000));
-  const mm = Math.floor(elapsed / 60);
-  const ss = elapsed % 60;
-
-  let emoji = '🌱', title = '继续加油！';
-  let msg = 'Terus berlatih, kamu pasti makin hebat!';
-  if(acc >= 90){ emoji = '🏆'; title = '太厉害了！'; msg = 'Luar biasa! Hampir semua benar.'; }
-  else if(acc >= 70){ emoji = '🎉'; title = '很好！'; msg = 'Hebat! Sedikit lagi menuju sempurna.'; }
-  else if(acc >= 50){ emoji = '💪'; title = '不错！'; msg = 'Bagus! Ulangi level ini untuk hasil lebih baik.'; }
-  else { emoji = '📖'; title = '没关系！'; msg = 'Jangan menyerah, coba pelan-pelan lagi ya.'; }
-
-  $('resEmoji').textContent = emoji;
-  $('resTitle').textContent = title;
-  $('resScore').textContent = state.score;
-  $('resSub').textContent = 'dari ' + total + ' soal · ' + msg;
-
-  $('stCorrect').textContent = state.correct;
-  $('stWrong').textContent = state.wrong;
-  $('stMiss').textContent = state.missed;
-  $('stAcc').textContent = acc + '%';
-  $('stTime').textContent = mm + ':' + (ss < 20 ? '0' + ss : ss);
-  $('stLevel').textContent = state.level === 'L1' ? '1' : state.level === 'L2' ? '2' : '3';
-
-  SFX.finish();
-  if(acc >= 70) confetti();
-
+  const total=state.queue.length;
+  const acc=total?Math.round((state.correct/total)*100):0;
+  const elapsed=Math.max(0,Math.round((Date.now()-state.sessionStart)/1000));
+  const mm=Math.floor(elapsed/60), ss=elapsed%60;
+  let emoji='🌱',title='继续加油！',msg='Terus berlatih, kamu pasti makin hebat!';
+  if(acc>=90){ emoji='🏆'; title='太厉害了！'; msg='Luar biasa! Hampir semua benar.'; }
+  else if(acc>=70){ emoji='🎉'; title='很好！'; msg='Hebat! Sedikit lagi menuju sempurna.'; }
+  else if(acc>=50){ emoji='💪'; title='不错！'; msg='Bagus! Ulangi level ini untuk hasil lebih baik.'; }
+  else { emoji='📖'; title='没关系！'; msg='Jangan menyerah, coba pelan-pelan lagi ya.'; }
+  $('resEmoji').textContent=emoji; $('resTitle').textContent=title;
+  $('resScore').textContent=state.score;
+  $('resSub').textContent='dari '+total+' soal · '+msg;
+  $('stCorrect').textContent=state.correct; $('stWrong').textContent=state.wrong;
+  $('stMiss').textContent=state.missed; $('stAcc').textContent=acc+'%';
+  $('stTime').textContent=mm+':'+(ss<10?'0'+ss:ss);
+  $('stLevel').textContent=state.level==='L1'?'1':state.level==='L2'?'2':'3';
+  SFX.finish(); if(acc>=70) confetti();
   showScreen('screen-result');
 }
-
-$('btnAgain').addEventListener('click', function(){
-  ensureAudio();
-  startGame();
-});
-$('btnHome').addEventListener('click', function(){
+$('btnAgain').addEventListener('click',function(){ ensureAudio(); startGame(); });
+$('btnHome').addEventListener('click',function(){
   if('speechSynthesis' in window) window.speechSynthesis.cancel();
-  stopTimer();
-  showScreen('screen-home');
+  stopTimer(); showScreen('screen-home');
 });
 
 /* =========================================================
-   17. PAUSE SAAT TAB TERSEMBUNYI
+   17. PAUSE TAB
    ========================================================= */
-document.addEventListener('visibilitychange', function(){
-  if(document.hidden){
-    stopTimer();
-  }else if(
-    !state.locked &&
-    $('screen-game').classList.contains('active') &&
-    state.timerId === null &&
-    state.timeLeft > 0 &&
-    state.queue.length
-  ){
-    state.timerId = setInterval(function(){
+document.addEventListener('visibilitychange',function(){
+  if(document.hidden){ stopTimer(); }
+  else if(!state.locked && $('screen-game').classList.contains('active') && state.timerId===null && state.timeLeft>0 && state.queue.length){
+    state.timerId=setInterval(function(){
       if(state.locked) return;
-      state.timeLeft -= TICK;
-      if(state.timeLeft <= 0){
-        state.timeLeft = 0;
-        updateTimerUI();
-        stopTimer();
-        onTimeout();
-        return;
-      }
+      state.timeLeft-=TICK;
+      if(state.timeLeft<=0){ state.timeLeft=0; updateTimerUI(); stopTimer(); onTimeout(); return; }
       updateTimerUI();
-      if(state.timeLeft <= 4000 && !state.warned){ state.warned = true; SFX.warn(); }
-    }, TICK);
+      if(state.timeLeft<=5000 && !state.warned){ state.warned=true; SFX.warn(); }
+    },TICK);
   }
 });
 
 /* =========================================================
-   18. PENCEGAHAN KLIK KANAN / SELEKSI
+   18. PROTEKSI
    ========================================================= */
-document.addEventListener('contextmenu', function(e){ e.preventDefault(); }, false);
-document.addEventListener('selectstart', function(e){ e.preventDefault(); }, false);
-document.addEventListener('dragstart', function(e){ e.preventDefault(); }, false);
+document.addEventListener('contextmenu',function(e){ e.preventDefault(); },false);
+document.addEventListener('selectstart',function(e){ e.preventDefault(); },false);
+document.addEventListener('dragstart',function(e){ e.preventDefault(); },false);
 
-console.log('[HSK 连词成句] Kalimat valid:', VALID_SENTENCES.length,
-  '| HSK1:', VALID_SENTENCES.filter(function(s){return s.lv===1;}).length,
-  '| HSK2:', VALID_SENTENCES.filter(function(s){return s.lv===2;}).length,
-  '| Timer:', TIME_LIMIT/2000, 'detik');
+console.log('[HSK 连词成句] Total kalimat tervalidasi:',VALID_SENTENCES.length,
+  '| HSK1:',VALID_SENTENCES.filter(function(s){return s.lv===1;}).length,
+  '| HSK2:',VALID_SENTENCES.filter(function(s){return s.lv===2;}).length,
+  '| Timer per soal: 20 detik');
 
 })();
 </script>
